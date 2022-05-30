@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name" translatable="false">Weapose</string>
+    <string name="degrees" translatable="false">\u00B0</string>
+
+    <string name="sun_rise">Sun rise</string>
+    <string name="wind">Wind</string>
+    <string name="humidity">Humidity</string>
+    <string name="address">Address</string>
+
+    <string name="retry">Retry</string>
+    <string name="invalid">Invalid</string>
+
+    <string name="unknown_address">Unknown address</string>
+
+    <!-- Drawer -->
+    <string name="home_tab">Home</string>
+    <string name="settings_tab">Settings</string>
+
+    <!-- Error -->
+    <string name="error_title_http">Error with HTTP</string>
+    <string name="error_title_http_object">Error with HTTP object</string>
+    <string name="error_message_http">Code: %1$d\nUrl: %2$s</string>
+    <string name="error_message_network">Error with Network</string>
+    <string name="error_message_preferences">Error with Preferences</string>
+    <string name="error_message_default">Something went wrong!</string>
+    <string name="error_title_permission_not_granted">Error with Permission</string>
+    <string name="error_message_permission_not_granted">Permission is not granted!\nPlease grant the permission to continue to using app!</string>
+    <string name="error_message_use_case_params_null">The params in %1$s must non-null.</string>
+    <string name="error_message_current_location_is_null">Cannot get the current location!</string>
+    <string name="error_message_current_address_is_not_found">Cannot get the current address!</string>
+    <string name="error_message_address_is_not_found">Cannot get the address!</string>
+    <string name="error_message_city_is_invalid">City is invalid!</string>
+    <string name="error_message_lat_lng_are_invalid">Latitude and Longitude are invalid!</string>
+
+    <!-- Home -->
+    <string name="home_text_celsius_high_low">H %1$s\u2103 / L %2$s\u2103</string>
+    <string name="home_text_meter_per_second" translatable="false">%1$sm/s</string>
+    <string name="home_text_humidity" translatable="false">%1$s%%</string>
+</resources>

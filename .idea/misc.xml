@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/java/com/minhdtm/example/mymovieapp/MainActivity.kt" value="0.20875420875420875" />
+        <entry key="app/src/main/java/com/minhdtm/example/mymovieapp/presentation/ui/home/HomeScreen.kt" value="0.25" />
+        <entry key="app/src/main/java/com/minhdtm/example/weapose/presentation/ui/home/HomeScreen.kt" value="0.10694444444444444" />
+        <entry key="app/src/main/java/com/minhdtm/example/weapose/presentation/ui/search/bymap/SearchByMap.kt" value="0.18981481481481483" />
+        <entry key="app/src/main/res/drawable/dark_mode-48px.xml" value="0.1085" />
+        <entry key="app/src/main/res/drawable/ic_humidity.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_my_location.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/light_mode-48px.xml" value="0.1085" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

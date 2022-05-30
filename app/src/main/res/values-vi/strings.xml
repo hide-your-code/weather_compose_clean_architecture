@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sun_rise">Mặt trời mọc</string>
+    <string name="wind">Vận tốc gió</string>
+    <string name="humidity">Độ ẩm</string>
+    <string name="home_tab">Màn hình chính</string>
+    <string name="settings_tab">Cài đặt</string>
+    <string name="error_title_http">Lỗi - HTTP</string>
+    <string name="error_title_http_object">Lỗi - HTTP server</string>
+    <string name="error_message_preferences">Lỗi - Preferences</string>
+    <string name="error_message_default">Có lỗi gì đó!</string>
+    <string name="error_title_permission_not_granted">Lỗi - Quyền</string>
+    <string name="error_message_use_case_params_null">Param của %1$s không được null.</string>
+    <string name="error_message_current_location_is_null">Không thể lấy vị trí hiện tại!</string>
+    <string name="error_message_current_address_is_not_found">Không thể lấy địa chỉ hiện tại!</string>
+    <string name="error_message_lat_lng_are_invalid">Kinh độ và Vĩ độ không đúng!</string>
+    <string name="home_text_celsius_high_low">C %1$s\u2103 / T %2$s\u2103</string>
+    <string name="error_message_city_is_invalid">Thành phố không đúng!</string>
+    <string name="error_message_permission_not_granted">Bạn chưa cấp quyền cho ứng dụng!\nVui lòng cấp quyền để tiếp tục sử dụng ứng dụng!</string>
+    <string name="error_message_address_is_not_found">Không thể xác định được địa chỉ này!</string>
+    <string name="error_message_network">Lỗi - Mạng</string>
+    <string name="error_message_http">Mã: %1$d\nUrl: %2$s</string>
+    <string name="retry">Thử lại</string>
+    <string name="invalid">Invalid</string>
+    <string name="address">Địa điểm</string>
+    <string name="unknown_address">Không xác định</string>
+</resources>
