@@ -73,3 +73,11 @@ fun String.toBackground(): Int = when {
         R.drawable.bg_clear_sky
     }
 }
+
+fun Double.toUVIndexAttention(): String = when {
+    this >= 11.0 -> "Extreme"
+    this >= 8.0 -> "Very high"
+    this >= 6.0 -> "High"
+    this >= 3.0 -> "Moderate"
+    else -> "Low"
+}

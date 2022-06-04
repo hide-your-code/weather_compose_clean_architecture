@@ -12,6 +12,7 @@ import timber.log.Timber
 open class BaseViewModel : ViewModel() {
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
         Timber.e(exception.message)
+        hideLoading()
         val errorResponse = if (exception is WeatherException) {
             exception
         } else {
@@ -28,6 +29,8 @@ open class BaseViewModel : ViewModel() {
     open fun showError(error: WeatherException) {}
 
     open fun hideError() {}
+
+    open fun hideLoading() {}
 
     fun callApi(api: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(coroutineExceptionHandler) {

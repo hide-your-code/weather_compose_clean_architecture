@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+object NetworkModule {
     @Provides
     fun provideOkHttpClient(
         headerInterceptor: HeaderInterceptor,
@@ -47,7 +47,5 @@ class NetworkModule {
     fun provideCurrentWeatherApiService(retrofit: Retrofit): CurrentWeatherApiService =
         retrofit.create(CurrentWeatherApiService::class.java)
 
-    companion object {
-        private const val TIME_OUT = 1L
-    }
+    private const val TIME_OUT = 1L
 }

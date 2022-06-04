@@ -65,7 +65,14 @@ fun SettingsScreen(
         },
         onShowSnackbar = onShowSnackbar,
         onDismissErrorDialog = onDismissDialog,
-    ) { _ ->
+    ) { _, _ ->
+
+    }
+}
+
+@Composable
+fun Test() {
+    Surface {
 
     }
 }

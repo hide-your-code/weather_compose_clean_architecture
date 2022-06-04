@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
-import com.minhdtm.example.weapose.presentation.theme.MyMovieAppTheme
+import com.minhdtm.example.weapose.presentation.theme.WeaposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            MyMovieAppTheme {
+            WeaposeTheme {
                 WeatherApp()
             }
         }

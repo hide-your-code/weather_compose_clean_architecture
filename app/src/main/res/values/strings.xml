@@ -1,20 +1,33 @@
 <resources>
     <string name="app_name" translatable="false">Weapose</string>
-    <string name="degrees" translatable="false">\u00B0</string>
+    <string name="degrees" translatable="false">%1$d\u00B0</string>
+    <string name="degrees_c" translatable="false">%1$s\u2103</string>
 
     <string name="sun_rise">Sun rise</string>
     <string name="wind">Wind</string>
     <string name="humidity">Humidity</string>
     <string name="address">Address</string>
+    <string name="uv_index">UV index</string>
+    <string name="sunset_sunrise">Sunset/Sunrise</string>
 
     <string name="retry">Retry</string>
     <string name="invalid">Invalid</string>
 
     <string name="unknown_address">Unknown address</string>
 
+    <string name="kilometer_per_hour" translatable="false">%1$s km/h</string>
+    <string name="sunrise_sunset" translatable="false">%1$s - %2$s</string>
+
+    <string name="search_every_where_you_want">Search every things you want!</string>
+    <string name="seven_days_in">7 days in</string>
+
     <!-- Drawer -->
-    <string name="home_tab">Home</string>
+    <string name="feature_group_tab">Feature</string>
+    <string name="current_weather_tab">Current weather</string>
+    <string name="seven_days_weather_tab">7 days weather</string>
+    <string name="another_group_tab">Another</string>
     <string name="settings_tab">Settings</string>
+    <string name="information_tab">Information</string>
 
     <!-- Error -->
     <string name="error_title_http">Error with HTTP</string>
@@ -34,6 +47,6 @@
 
     <!-- Home -->
     <string name="home_text_celsius_high_low">H %1$s\u2103 / L %2$s\u2103</string>
-    <string name="home_text_meter_per_second" translatable="false">%1$sm/s</string>
+    <string name="home_text_meter_per_second" translatable="false">%1$s m/s</string>
     <string name="home_text_humidity" translatable="false">%1$s%%</string>
 </resources>

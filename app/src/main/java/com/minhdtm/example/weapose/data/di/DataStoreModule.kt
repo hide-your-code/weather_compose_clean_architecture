@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataStoreModule {
+object DataStoreModule {
     private val Context.dataStore by preferencesDataStore(DataStorePreferenceStorage.PREFS_NAME)
 
     @Provides

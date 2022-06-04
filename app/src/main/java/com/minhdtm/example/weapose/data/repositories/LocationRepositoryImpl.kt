@@ -9,6 +9,11 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.libraries.places.api.model.AutocompletePrediction
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.domain.exception.WeatherException
 import com.minhdtm.example.weapose.domain.repositories.LocationRepository
@@ -18,6 +23,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.suspendCancellableCoroutine
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -25,6 +31,8 @@ import kotlin.coroutines.resumeWithException
 
 class LocationRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val token: AutocompleteSessionToken,
+    private val placesClient: PlacesClient,
 ) : LocationRepository {
     @SuppressLint("MissingPermission")
     override fun getCurrentLocation(): Flow<LatLng> = flow {
@@ -51,9 +59,13 @@ class LocationRepositoryImpl @Inject constructor(
                 val error = WeatherException.SnackBarException(message = exception.message ?: "")
                 cancellableContinuation.resumeWithException(error)
             }.addOnCompleteListener {
-                cancellableContinuation.invokeOnCancellation {
-                    cancellationTokenSource.cancel()
-                }
+                cancellableContinuation.cancel()
+            }.addOnCanceledListener {
+                cancellableContinuation.cancel()
+            }
+
+            cancellableContinuation.invokeOnCancellation {
+                cancellationTokenSource.cancel()
             }
         })
     }
@@ -89,6 +101,34 @@ class LocationRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getLocationFromText(text: String): Flow<Address> = flow {
+        emit(suspendCancellableCoroutine { cancellableContinuation ->
+            val error = WeatherException.SnackBarException(
+                message = context.getString(R.string.error_message_current_address_is_not_found)
+            )
+
+            val geo = Geocoder(context, Locale.ENGLISH)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                geo.getFromLocationName(text, 1) { listAddress ->
+                    if (listAddress.isEmpty()) {
+                        cancellableContinuation.resumeWithException(error)
+                    } else {
+                        cancellableContinuation.resume(listAddress.first())
+                    }
+                    cancellableContinuation.cancel()
+                }
+            } else {
+                val listAddress = geo.getFromLocationName(text, 1)
+                if (listAddress.isNullOrEmpty()) {
+                    cancellableContinuation.resumeWithException(error)
+                } else {
+                    cancellableContinuation.resume(listAddress.first())
+                }
+                cancellableContinuation.cancel()
+            }
+        })
+    }
+
     override fun getAddressFromLocation(latLng: LatLng): Flow<Address> = flow {
         emit(suspendCancellableCoroutine { cancellableContinuation ->
             val error = WeatherException.SnackBarException(
@@ -112,6 +152,29 @@ class LocationRepositoryImpl @Inject constructor(
                 } else {
                     cancellableContinuation.resume(listAddress.first())
                 }
+                cancellableContinuation.cancel()
+            }
+        })
+    }
+
+    override fun getAddress(text: String): Flow<List<AutocompletePrediction>> = flow {
+        val error = WeatherException.SnackBarException(
+            -1, context.getString(R.string.error_message_address_is_not_found)
+        )
+
+        emit(suspendCancellableCoroutine { cancellableContinuation ->
+            val request =
+                FindAutocompletePredictionsRequest.builder().setTypeFilter(TypeFilter.ADDRESS).setSessionToken(token)
+                    .setQuery(text).build()
+
+            placesClient.findAutocompletePredictions(request).addOnSuccessListener {
+                cancellableContinuation.resume(it.autocompletePredictions)
+            }.addOnFailureListener {
+                Timber.e(it)
+                cancellableContinuation.resumeWithException(error)
+            }.addOnCompleteListener {
+                cancellableContinuation.cancel()
+            }.addOnCanceledListener {
                 cancellableContinuation.cancel()
             }
         })
