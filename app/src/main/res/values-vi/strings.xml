@@ -3,8 +3,22 @@
     <string name="sun_rise">Mặt trời mọc</string>
     <string name="wind">Vận tốc gió</string>
     <string name="humidity">Độ ẩm</string>
-    <string name="home_tab">Màn hình chính</string>
+
+    <string name="feature_group_tab">Tính năng</string>
+    <string name="current_weather_tab">Thời tiết hiện tại</string>
+    <string name="seven_days_weather_tab">Dự báo 7 ngày</string>
+    <string name="another_group_tab">Khác</string>
     <string name="settings_tab">Cài đặt</string>
+    <string name="information_tab">Thông tin</string>
+    <string name="search_every_where_you_want">Tìm kiếm bất kì đâu bạn muốn …</string>
+    <string name="seven_days_in">7 ngày ở</string>
+    <string name="uv_index">Chỉ số UV</string>
+    <string name="sunset_sunrise">Mặt trời mọc/lặn</string>
+    <string name="retry">Thử lại</string>
+    <string name="invalid">Invalid</string>
+    <string name="address">Địa điểm</string>
+    <string name="unknown_address">Không xác định</string>
+
     <string name="error_title_http">Lỗi - HTTP</string>
     <string name="error_title_http_object">Lỗi - HTTP server</string>
     <string name="error_message_preferences">Lỗi - Preferences</string>
@@ -20,8 +34,4 @@
     <string name="error_message_address_is_not_found">Không thể xác định được địa chỉ này!</string>
     <string name="error_message_network">Lỗi - Mạng</string>
     <string name="error_message_http">Mã: %1$d\nUrl: %2$s</string>
-    <string name="retry">Thử lại</string>
-    <string name="invalid">Invalid</string>
-    <string name="address">Địa điểm</string>
-    <string name="unknown_address">Không xác định</string>
 </resources>

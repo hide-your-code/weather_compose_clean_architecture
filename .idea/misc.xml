@@ -3,14 +3,34 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/debug/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="app/src/debug/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
         <entry key="app/src/main/java/com/minhdtm/example/mymovieapp/MainActivity.kt" value="0.20875420875420875" />
         <entry key="app/src/main/java/com/minhdtm/example/mymovieapp/presentation/ui/home/HomeScreen.kt" value="0.25" />
+        <entry key="app/src/main/java/com/minhdtm/example/weapose/presentation/component/TextFieldSearch.kt" value="0.6067961165048543" />
+        <entry key="app/src/main/java/com/minhdtm/example/weapose/presentation/ui/home/CurrentWeatherScreen.kt" value="0.1" />
         <entry key="app/src/main/java/com/minhdtm/example/weapose/presentation/ui/home/HomeScreen.kt" value="0.10694444444444444" />
+        <entry key="app/src/main/java/com/minhdtm/example/weapose/presentation/ui/search/SearchByMapScreen.kt" value="0.11481481481481481" />
         <entry key="app/src/main/java/com/minhdtm/example/weapose/presentation/ui/search/bymap/SearchByMap.kt" value="0.18981481481481483" />
+        <entry key="app/src/main/java/com/minhdtm/example/weapose/presentation/ui/search/map/SearchByMapScreen.kt" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/calendar_month-48px.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/cloud-48px.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/dark_mode-48px.xml" value="0.1085" />
+        <entry key="app/src/main/res/drawable/ic_calendar.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_cloud.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_dark_mode.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_humidity.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_info.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_light_mode.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_my_location.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_settings.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_wind.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/info-48px.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/light_mode-48px.xml" value="0.1085" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_app.xml" value="0.1" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_app_round.xml" value="0.1" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>

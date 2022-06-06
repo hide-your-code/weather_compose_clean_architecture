@@ -1,6 +1,5 @@
 package com.minhdtm.example.weapose.presentation.component
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -25,7 +24,6 @@ import com.minhdtm.example.weapose.domain.exception.WeatherException
 import com.minhdtm.example.weapose.domain.model.AlertDialog
 import com.minhdtm.example.weapose.presentation.base.ViewState
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun <VS : ViewState> WeatherHandleError(
     modifier: Modifier = Modifier,

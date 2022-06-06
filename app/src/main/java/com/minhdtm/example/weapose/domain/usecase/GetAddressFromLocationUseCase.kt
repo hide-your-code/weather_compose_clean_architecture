@@ -21,13 +21,12 @@ class GetAddressFromLocationUseCase @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val locationRepository: LocationRepository,
 ) : FlowUseCase<GetAddressFromLocationUseCase.Params, Address>(ioDispatcher) {
-    override fun execute(params: Params?): Flow<Address> = if (params != null) {
-        locationRepository.getAddressFromLocation(params.latLng)
-    } else {
+    override fun execute(params: Params?): Flow<Address> = if (params == null) {
         WeatherException.SnackBarException(message = context.getString(R.string.error_message_lat_lng_are_invalid))
             .asFlow()
+    } else {
+        locationRepository.getAddressFromLocation(params.latLng)
     }
-
 
     data class Params(
         val latLng: LatLng,

@@ -1,4 +1,4 @@
-import java.util.Properties
+import java.util.*
 
 plugins {
     id("com.android.application")
@@ -73,16 +73,19 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.1.1")
     implementation("androidx.compose.ui:ui-tooling-preview:1.1.1")
     implementation("androidx.compose.material3:material3:1.0.0-alpha12")
+    implementation("androidx.compose.material:material:1.2.0-beta03")
 
     // Google accompanist
     implementation("com.google.accompanist:accompanist-navigation-animation:0.24.9-beta")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.9-beta")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.24.9-beta")
     implementation("com.google.accompanist:accompanist-permissions:0.24.9-beta")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.24.9-beta")
 
     // Google play services
     implementation("com.google.android.gms:play-services-location:19.0.1")
     implementation("com.google.android.gms:play-services-maps:18.0.2")
+    implementation("com.google.android.libraries.places:places:2.6.0")
     implementation("com.google.maps.android:maps-compose:2.1.1")
 
     // Coroutine
@@ -96,6 +99,12 @@ dependencies {
     // Okhttp
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    // Room
+    implementation("androidx.room:room-runtime:2.4.2")
+    implementation("androidx.room:room-ktx:2.4.2")
+    annotationProcessor("androidx.room:room-compiler:2.4.2")
+    kapt("androidx.room:room-compiler:2.4.2")
 
     // Hilt
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")

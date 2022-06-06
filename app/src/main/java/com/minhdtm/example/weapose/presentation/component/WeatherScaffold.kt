@@ -1,6 +1,6 @@
 package com.minhdtm.example.weapose.presentation.component
 
-import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -12,7 +12,6 @@ import com.minhdtm.example.weapose.domain.enums.ActionType
 import com.minhdtm.example.weapose.presentation.base.ViewState
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun <VS : ViewState> WeatherScaffold(
     modifier: Modifier = Modifier,
@@ -28,7 +27,7 @@ fun <VS : ViewState> WeatherScaffold(
     onErrorPositiveAction: (action: ActionType?, value: Any?) -> Unit = { _, _ -> },
     onErrorNegativeAction: (action: ActionType?, value: Any?) -> Unit = { _, _ -> },
     onDismissErrorDialog: () -> Unit,
-    content: @Composable (viewState: VS) -> Unit,
+    content: @Composable (PaddingValues, VS) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
@@ -55,7 +54,7 @@ fun <VS : ViewState> WeatherScaffold(
             onNegativeAction = onErrorNegativeAction,
             onDismissErrorDialog = onDismissErrorDialog,
         ) { viewState ->
-            content.invoke(viewState)
+            content.invoke(paddingValues, viewState)
         }
     }
 }

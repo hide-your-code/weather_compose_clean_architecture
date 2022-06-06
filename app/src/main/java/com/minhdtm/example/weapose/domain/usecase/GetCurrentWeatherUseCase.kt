@@ -24,9 +24,8 @@ class GetCurrentWeatherUseCase @Inject constructor(
     override fun execute(params: Params?): Flow<CurrentWeather> = if (params != null) {
         weatherRepository.getCurrentWeatherByLocation(params.latLng)
     } else {
-        WeatherException.SnackBarException(
-            message = context.getString(R.string.error_message_lat_lng_are_invalid)
-        ).asFlow()
+        WeatherException.SnackBarException(message = context.getString(R.string.error_message_lat_lng_are_invalid))
+            .asFlow()
     }
 
     data class Params(

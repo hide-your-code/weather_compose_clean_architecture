@@ -11,4 +11,6 @@ interface WeatherRepository {
     fun getCurrentWeatherByLocation(latLng: LatLng): Flow<CurrentWeather>
 
     fun getHourWeather(latLng: LatLng): Flow<OneCallResponse>
+
+    fun getSevenDaysWeather(latLng: LatLng): Flow<OneCallResponse>
 }

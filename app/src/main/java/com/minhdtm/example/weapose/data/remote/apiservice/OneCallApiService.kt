@@ -15,4 +15,14 @@ interface OneCallApiService {
         @Query("lang") lang: String = "en",
         @Query("appid") appId: String
     ): Flow<OneCallResponse>
+
+    @GET("onecall")
+    fun getSevenDaysWeather(
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
+        @Query("exclude") exclude: String = "current,alerts,minutes,hourly",
+        @Query("units") units: String = "metric",
+        @Query("lang") lang: String = "en",
+        @Query("appid") appId: String
+    ): Flow<OneCallResponse>
 }

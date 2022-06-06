@@ -19,6 +19,6 @@ data class Daily(
     @SerializedName("wind_gust") val windGust: Double? = 0.0,
     @SerializedName("weather") val weather: List<Weather>? = emptyList(),
     @SerializedName("clouds") val clouds: Int? = 0,
-    @SerializedName("pop") val pop: Int? = 0,
+    @SerializedName("pop") val pop: Double? = 0.0,
     @SerializedName("uvi") val uvi: Double? = 0.0,
 ) : Model()
