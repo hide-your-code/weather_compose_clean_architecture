@@ -20,7 +20,7 @@ I want to say thanks for those people to help me to make this app.
     ```kotlin
     BASE_URL=https://api.openweathermap.org/data/2.5/
     API_KEY=API_KEY // Fill your open weather api key in here
-    MAPS_API_KEY= GOOGLE_MAPS_API_KEY // Fill your google maps api key in here
+    MAPS_API_KEY=GOOGLE_MAPS_API_KEY // Fill your google maps api key in here
     ```
 
 ## :camera: Screenshots
@@ -28,12 +28,17 @@ I want to say thanks for those people to help me to make this app.
 | Light mode | Dark mode |
 | :---: | :---: |
 | ![Home Light](image/home_light.png "Home Light") | ![Home Dark](image/home_dark.png "Home Dark") |
+| ![Seven Days Light](image/seven_days_light.png "Seven Days Light") | ![Seven Days Light](image/seven_days_dark.png "Seven Days Light") |
 | ![Search By Map Light](image/search_by_map_light.png "Search By Map Light") | ![Search By Map Dark](image/search_by_map_dark.png "Search By Map Dark") |
+| ![Drawer Light](image/drawer_light.png "Drawer Light") | ![Drawer Dark](image/drawer_dark.png "Drawer Dark") |
+| ![Search By Text Light](image/search_by_text_light.png "Search By Text Light") | ![Search By Text Dark](image/search_by_text_dark.png "Search By Text Dark") |
 
 ## :blue_book: Features
 
-- Show the current weather by location.
+- Show the current weather by location or name.
+- Show the seven days weather by location or name.
 - Choice the location you want by using Google Map.
+- Search location by address name by using Google Places.
 - Support dark mode.
 - Support dynamic material from Android 13 and above.
 - Support English and Vietnamese.
