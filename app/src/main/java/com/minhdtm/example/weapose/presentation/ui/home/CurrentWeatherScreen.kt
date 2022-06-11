@@ -27,6 +27,7 @@ import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices.NEXUS_5
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_4_XL
 import androidx.compose.ui.tooling.preview.Preview
@@ -89,6 +90,13 @@ fun CurrentWeather(
                 viewModel.getWeatherByLocation(it)
                 appState.removeDataFromNextScreen<LatLng>(Constants.Key.LAT_LNG)
             }
+        }
+    }
+
+    // Locale change
+    LaunchedEffect(true) {
+        appState.localChange.collectLatest {
+            viewModel.onRefreshCurrentWeather(false)
         }
     }
 
@@ -339,7 +347,7 @@ fun CurrentWeatherAppBar(
         modifier = modifier,
         title = {
             if (title.isNotBlank()) {
-                Text(text = title)
+                Text(text = title, maxLines = 1, overflow = TextOverflow.Visible)
             }
         },
         navigationIcon = {
@@ -370,6 +378,8 @@ fun CurrentWeatherAppBar(
                     Text(
                         text = city ?: stringResource(id = R.string.unknown_address),
                         style = MaterialTheme.typography.titleLarge,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

@@ -21,7 +21,7 @@ android {
         minSdk = 21
         targetSdkPreview = "Tiramisu"
         versionCode = 1
-        versionName = "1.0.0"
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

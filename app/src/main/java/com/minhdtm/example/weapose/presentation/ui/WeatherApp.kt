@@ -1,6 +1,8 @@
 package com.minhdtm.example.weapose.presentation.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -8,11 +10,13 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,6 +25,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.minhdtm.example.weapose.BuildConfig
 import com.minhdtm.example.weapose.R
+import com.minhdtm.example.weapose.presentation.broadcast.LocaleChangeBroadcast
 import com.minhdtm.example.weapose.presentation.component.NavigationDrawerLabel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -31,10 +36,21 @@ fun WeatherApp(appState: WeatherAppState = rememberWeatherAppState()) {
     val darkIcons = isSystemInDarkTheme()
 
     val localFocusManager = LocalFocusManager.current
+    val localContext = LocalContext.current
 
     SideEffect {
         if (!appState.isCustomDarkMode) {
             systemUiController.setSystemBarsColor(color = Color.Transparent, darkIcons = !darkIcons)
+        }
+    }
+
+    DisposableEffect(true) {
+        val broadcast = LocaleChangeBroadcast(appState::onLocaleChange)
+
+        localContext.registerReceiver(broadcast, IntentFilter(Intent.ACTION_LOCALE_CHANGED))
+
+        onDispose {
+            localContext.unregisterReceiver(broadcast)
         }
     }
 

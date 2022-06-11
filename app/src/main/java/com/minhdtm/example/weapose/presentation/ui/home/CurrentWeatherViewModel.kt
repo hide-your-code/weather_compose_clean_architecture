@@ -73,7 +73,6 @@ class CurrentWeatherViewModel @Inject constructor(
         callApi {
             showLoading()
             getCurrentLocationUseCase().collect {
-                currentLocation = it
                 getCurrentWeather(it)
             }
         }
@@ -81,7 +80,9 @@ class CurrentWeatherViewModel @Inject constructor(
 
     private fun getCurrentWeather(latLng: LatLng) {
         callApi {
-            currentLocation = latLng
+            if (currentLocation != latLng) {
+                currentLocation = latLng
+            }
 
             getCurrentWeatherUseCase(GetCurrentWeatherUseCase.Params(currentLocation)).zip(
                 getHourWeatherUseCase(GetHourWeatherUseCase.Params(currentLocation)),
@@ -125,10 +126,11 @@ class CurrentWeatherViewModel @Inject constructor(
         }
     }
 
-    fun onRefreshCurrentWeather() {
+    fun onRefreshCurrentWeather(showRefresh: Boolean = true) {
         _state.update {
             it.copy(
-                isRefresh = true
+                isRefresh = showRefresh,
+                isLoading = !showRefresh,
             )
         }
 
