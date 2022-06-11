@@ -21,6 +21,18 @@
     <string name="search_every_where_you_want">Search every things you want!</string>
     <string name="seven_days_in">7 days in</string>
 
+    <string name="history">History</string>
+    <string name="clear_all">Clear all</string>
+    <string name="result">Result</string>
+    <string name="no_result">No result</string>
+    <string name="no_history">No history</string>
+
+    <string name="uvi_extreme">Extreme, %1$s</string>
+    <string name="uvi_very_high">Very high, %1$s</string>
+    <string name="uvi_high">High, %1$s</string>
+    <string name="uvi_moderate">Moderate, %1$s</string>
+    <string name="uvi_low">Low, %1$s</string>
+
     <!-- Drawer -->
     <string name="feature_group_tab">Feature</string>
     <string name="current_weather_tab">Current weather</string>

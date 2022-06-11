@@ -19,6 +19,18 @@
     <string name="address">Địa điểm</string>
     <string name="unknown_address">Không xác định</string>
 
+    <string name="history">Lịch sử</string>
+    <string name="clear_all">Xóa tất cả</string>
+    <string name="result">Kết quả</string>
+    <string name="no_result">Không có kết quả</string>
+    <string name="no_history">Lịch sử rỗng</string>
+
+    <string name="uvi_extreme">Nguy hiểm, %1$s</string>
+    <string name="uvi_very_high">Rất cao, %1$s</string>
+    <string name="uvi_high">Cao, %1$s</string>
+    <string name="uvi_moderate">Vừa phải, %1$s</string>
+    <string name="uvi_low">Thấp, %1$s</string>
+
     <string name="error_title_http">Lỗi - HTTP</string>
     <string name="error_title_http_object">Lỗi - HTTP server</string>
     <string name="error_message_preferences">Lỗi - Preferences</string>

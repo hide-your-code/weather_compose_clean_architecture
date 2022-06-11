@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.text.intl.Locale
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -28,7 +29,10 @@ import com.minhdtm.example.weapose.presentation.ui.settings.Settings
 import com.minhdtm.example.weapose.presentation.ui.sevendaysweather.SevenDaysWeather
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 sealed class Screen(val route: String) {
@@ -256,6 +260,9 @@ class WeatherAppState(
             return route in listScreenCustomizeDarkMode
         }
 
+    private val _localeChange = Channel<Locale>()
+    val localChange: Flow<Locale> = _localeChange.receiveAsFlow()
+
     fun currentDestinationIs(route: String): Boolean = controller.currentBackStackEntry?.destination?.route == route
 
     fun <T> getDataFromNextScreen(key: String, defaultValue: T): StateFlow<T>? =
@@ -263,6 +270,12 @@ class WeatherAppState(
 
     fun <T> removeDataFromNextScreen(key: String) {
         controller.currentBackStackEntry?.savedStateHandle?.remove<T>(key)
+    }
+
+    fun onLocaleChange(locale: Locale) {
+        coroutineScope.launch {
+            _localeChange.send(locale)
+        }
     }
 
     fun openDrawer() {
@@ -295,7 +308,6 @@ class WeatherAppState(
             }
             controller.popBackStack(route = popToRoute, inclusive = false)
         }
-
     }
 
     fun navigateToCurrentWeather() {

@@ -6,7 +6,6 @@ import com.minhdtm.example.weapose.data.model.Daily
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import com.minhdtm.example.weapose.presentation.utils.toDateTime
 import com.minhdtm.example.weapose.presentation.utils.toIcon
-import com.minhdtm.example.weapose.presentation.utils.toUVIndexAttention
 import javax.inject.Inject
 
 data class DayWeatherViewData(
@@ -17,7 +16,7 @@ data class DayWeatherViewData(
     val minTemp: Double,
     val windSpeed: String,
     val humidity: Int,
-    val uvIndex: String,
+    val uvIndex: Double,
     val sunrise: String,
     val sunset: String,
 ) : ViewData()
@@ -35,7 +34,7 @@ class SevenWeatherViewDataMapper @Inject constructor() : DataModelMapper<Daily, 
         val minTemp = model.temp?.min ?: 0.0
         val windSpeed = String.format("%.1f", model.windSpeed?.times(3.6) ?: 0.0)
         val humidity = model.humidity ?: 0
-        val uvIndex = "${model.uvi?.toUVIndexAttention()}, ${model.uvi ?: 0.0}"
+        val uvIndex = model.uvi ?: 0.0
         val sunrise = model.sunrise?.times(1000)?.toDateTime(Constants.DateFormat.HH_mm) ?: ""
         val sunset = model.sunset?.times(1000)?.toDateTime(Constants.DateFormat.HH_mm) ?: ""
 

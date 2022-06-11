@@ -1,5 +1,6 @@
 package com.minhdtm.example.weapose.presentation.ui.search.text
 
+import android.os.Build
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,13 +13,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.android.libraries.places.api.model.AutocompletePrediction
+import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.presentation.component.InfinityText
 import com.minhdtm.example.weapose.presentation.component.WeatherScaffold
 import com.minhdtm.example.weapose.presentation.model.HistorySearchAddressViewData
@@ -27,6 +33,7 @@ import com.minhdtm.example.weapose.presentation.utils.Constants
 import com.minhdtm.example.weapose.presentation.utils.clearFocusOnKeyboardDismiss
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchByText(
     appState: WeatherAppState,
@@ -47,6 +54,29 @@ fun SearchByText(
                 }
             }
         }
+    }
+
+    // Hide keyboard when SearchByText is disposed
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    DisposableEffect(true) {
+        onDispose {
+            keyboardController?.hide()
+        }
+    }
+
+    // Change the placeholder text when switch to vietnamese or english
+    val context = LocalContext.current
+    val locale = remember {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            context.resources.configuration.locales[0]
+        } else {
+            context.resources.configuration.locale
+        }
+    }
+
+    LaunchedEffect(locale) {
+        viewModel.updatePlaceHolder(context.getString(R.string.search_every_where_you_want))
     }
 
     SearchByTextScreen(
@@ -98,7 +128,9 @@ fun SearchByTextScreen(
     onDismissErrorDialog: () -> Unit = {},
 ) {
     WeatherScaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding(),
         state = state,
         onDismissErrorDialog = onDismissErrorDialog,
         topBar = {
@@ -117,8 +149,8 @@ fun SearchByTextScreen(
                     modifier = Modifier
                         .padding(start = 10.dp, end = 10.dp, top = 20.dp)
                         .fillMaxWidth(),
-                    textTitle = "History",
-                    textAction = "Clean all",
+                    textTitle = stringResource(id = R.string.history),
+                    textAction = stringResource(id = R.string.clear_all),
                     onClickAction = onClearAllHistory,
                 )
             }
@@ -127,7 +159,7 @@ fun SearchByTextScreen(
                 item {
                     EmptyList(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "No history",
+                        text = stringResource(id = R.string.no_history),
                     )
                 }
             } else {
@@ -145,7 +177,7 @@ fun SearchByTextScreen(
                     modifier = Modifier
                         .padding(start = 10.dp, end = 10.dp, top = 20.dp)
                         .fillMaxWidth(),
-                    textTitle = "Result",
+                    textTitle = stringResource(id = R.string.result),
                 )
             }
 
@@ -153,7 +185,7 @@ fun SearchByTextScreen(
                 item {
                     EmptyList(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "No result",
+                        text = stringResource(id = R.string.no_result),
                     )
                 }
             } else {

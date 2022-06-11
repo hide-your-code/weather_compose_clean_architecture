@@ -72,6 +72,17 @@ class SearchByTextViewModel @Inject constructor(
         }
     }
 
+    fun updatePlaceHolder(default: String) {
+        val newPlaceHolder = placeHolder.apply {
+            set(0, default)
+        }
+        _state.update {
+            it.copy(
+                addressPlaceHolder = newPlaceHolder
+            )
+        }
+    }
+
     override fun hideError() {
         _state.update {
             it.copy(

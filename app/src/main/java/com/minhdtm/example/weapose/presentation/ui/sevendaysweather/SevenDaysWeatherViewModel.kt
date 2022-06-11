@@ -97,6 +97,7 @@ class SevenDaysWeatherViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         isLoading = false,
+                        isRefresh = false,
                         listSevenDays = listSevenDays ?: emptyList(),
                     )
                 }
@@ -107,6 +108,19 @@ class SevenDaysWeatherViewModel @Inject constructor(
     fun onNavigateToSearch() {
         callApi {
             _event.send(SevenDaysEvent.NavigateToSearchByText(currentLocation))
+        }
+    }
+
+    fun onRefresh(isShowRefresh: Boolean = true) {
+        callApi {
+            _state.update {
+                it.copy(
+                    isRefresh = isShowRefresh,
+                    isLoading = true,
+                )
+            }
+
+            getSevenDaysWeather(currentLocation)
         }
     }
 
@@ -143,6 +157,7 @@ class SevenDaysWeatherViewModel @Inject constructor(
 data class SevenDaysViewState(
     override val isLoading: Boolean = false,
     override val error: WeatherException? = null,
+    val isRefresh: Boolean = false,
     val address: String = "",
     val listSevenDays: List<DayWeatherViewData> = emptyList()
 ) : ViewState(isLoading, error)

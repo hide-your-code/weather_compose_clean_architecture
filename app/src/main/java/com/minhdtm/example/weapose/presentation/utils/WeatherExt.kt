@@ -74,10 +74,10 @@ fun String.toBackground(): Int = when {
     }
 }
 
-fun Double.toUVIndexAttention(): String = when {
-    this >= 11.0 -> "Extreme"
-    this >= 8.0 -> "Very high"
-    this >= 6.0 -> "High"
-    this >= 3.0 -> "Moderate"
-    else -> "Low"
+fun Double.toUVIndexAttention(): Int = when {
+    this >= 11.0 -> R.string.uvi_extreme
+    this >= 8.0 -> R.string.uvi_very_high
+    this >= 6.0 -> R.string.uvi_high
+    this >= 3.0 -> R.string.uvi_moderate
+    else -> R.string.uvi_low
 }

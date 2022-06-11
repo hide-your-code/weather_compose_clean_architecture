@@ -18,6 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.android.gms.maps.model.LatLng
 import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.presentation.component.WeatherScaffold
@@ -26,6 +28,7 @@ import com.minhdtm.example.weapose.presentation.ui.Screen
 import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 import com.minhdtm.example.weapose.presentation.ui.home.CurrentWeatherAppBar
 import com.minhdtm.example.weapose.presentation.utils.Constants
+import com.minhdtm.example.weapose.presentation.utils.toUVIndexAttention
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -54,6 +57,13 @@ fun SevenDaysWeather(
         }
     }
 
+    // Locale change
+    LaunchedEffect(true) {
+        appState.localChange.collectLatest {
+            viewModel.onRefresh(false)
+        }
+    }
+
     // Get event
     LaunchedEffect(true) {
         viewModel.event.collectLatest { event ->
@@ -68,6 +78,9 @@ fun SevenDaysWeather(
     SevenDaysWeatherScreen(
         state = state,
         snackbarHostState = appState.snackbarHost,
+        onRefresh = {
+            viewModel.onRefresh()
+        },
         onDrawer = {
             appState.openDrawer()
         },
@@ -88,6 +101,7 @@ fun SevenDaysWeather(
 fun SevenDaysWeatherScreen(
     state: SevenDaysViewState,
     snackbarHostState: SnackbarHostState,
+    onRefresh: () -> Unit = {},
     onShowSnackbar: (message: String) -> Unit = {},
     onDrawer: () -> Unit = {},
     onNavigateSearch: () -> Unit = {},
@@ -109,10 +123,15 @@ fun SevenDaysWeatherScreen(
         onShowSnackbar = onShowSnackbar,
         onDismissErrorDialog = onDismissDialog,
     ) { _, viewState ->
-        ListWeatherDay(
-            modifier = Modifier.fillMaxSize(),
-            list = viewState.listSevenDays,
-        )
+        SwipeRefresh(
+            state = SwipeRefreshState(viewState.isRefresh),
+            onRefresh = onRefresh,
+        ) {
+            ListWeatherDay(
+                modifier = Modifier.fillMaxSize(),
+                list = viewState.listSevenDays,
+            )
+        }
     }
 }
 
@@ -167,7 +186,7 @@ fun WeatherDayItem(
 
                 Text(
                     text = item.weatherDetail,
-                    style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.secondaryContainer),
+                    style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.inversePrimary),
                 )
             }
 
@@ -190,7 +209,7 @@ fun WeatherDayItem(
 
                     Text(
                         text = stringResource(id = R.string.degrees_c, item.minTemp.toString()),
-                        style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.secondaryContainer),
+                        style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.inversePrimary),
                     )
                 }
 
@@ -239,7 +258,7 @@ fun WeatherDayItem(
                         .fillMaxWidth()
                         .padding(bottom = 5.dp),
                     title = stringResource(id = R.string.uv_index),
-                    description = item.uvIndex,
+                    description = stringResource(id = item.uvIndex.toUVIndexAttention(), item.uvIndex.toString()),
                 )
 
                 WeatherInformation(
@@ -252,7 +271,7 @@ fun WeatherDayItem(
             }
         }
 
-        Divider(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.secondaryContainer)
+        Divider(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.inversePrimary)
     }
 }
 
@@ -266,7 +285,7 @@ fun WeatherInformation(
         Text(
             text = title,
             modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.secondaryContainer),
+            style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.inversePrimary),
         )
 
         Text(

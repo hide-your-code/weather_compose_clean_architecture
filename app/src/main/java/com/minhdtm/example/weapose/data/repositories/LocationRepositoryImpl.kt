@@ -5,6 +5,7 @@ import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
+import androidx.compose.ui.text.intl.Locale
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -78,7 +79,13 @@ class LocationRepositoryImpl @Inject constructor(
                     message = context.getString(R.string.error_message_current_address_is_not_found)
                 )
 
-                val geo = Geocoder(context, Locale.ENGLISH)
+                val getSystemLocale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    context.resources.configuration.locales[0]
+                } else {
+                    context.resources.configuration.locale
+                }
+
+                val geo = Geocoder(context, getSystemLocale)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     geo.getFromLocation(latLng.latitude, latLng.longitude, 1) { listAddress ->
                         if (listAddress.isEmpty()) {
@@ -107,7 +114,13 @@ class LocationRepositoryImpl @Inject constructor(
                 message = context.getString(R.string.error_message_current_address_is_not_found)
             )
 
-            val geo = Geocoder(context, Locale.ENGLISH)
+            val getSystemLocale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                context.resources.configuration.locales[0]
+            } else {
+                context.resources.configuration.locale
+            }
+
+            val geo = Geocoder(context, getSystemLocale)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 geo.getFromLocationName(text, 1) { listAddress ->
                     if (listAddress.isEmpty()) {
@@ -135,7 +148,13 @@ class LocationRepositoryImpl @Inject constructor(
                 -1, context.getString(R.string.error_message_address_is_not_found)
             )
 
-            val geo = Geocoder(context, Locale.ENGLISH)
+            val getSystemLocale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                context.resources.configuration.locales[0]
+            } else {
+                context.resources.configuration.locale
+            }
+
+            val geo = Geocoder(context, getSystemLocale)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 geo.getFromLocation(latLng.latitude, latLng.longitude, 1) { listAddress ->
                     if (listAddress.isEmpty()) {
