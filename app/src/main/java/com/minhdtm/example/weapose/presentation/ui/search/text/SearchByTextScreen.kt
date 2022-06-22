@@ -31,7 +31,6 @@ import com.minhdtm.example.weapose.presentation.model.HistorySearchAddressViewDa
 import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import com.minhdtm.example.weapose.presentation.utils.clearFocusOnKeyboardDismiss
-import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -46,14 +45,17 @@ fun SearchByText(
     }
 
     // Get event
-    LaunchedEffect(true) {
-        viewModel.event.collectLatest { event ->
-            when (event) {
-                is SearchByTextEvent.NavigateToSearchByMap -> {
-                    appState.navigateToSearchByMap(event.fromRoute, event.latLng)
-                }
+    LaunchedEffect(state) {
+        val navigateToSearchByMap = state.navigateToSearchByMap
+
+        when {
+            navigateToSearchByMap != null -> {
+                appState.navigateToSearchByMap(navigateToSearchByMap.fromRoute, navigateToSearchByMap.latLng)
             }
+            else -> return@LaunchedEffect
         }
+
+        viewModel.cleanEvent()
     }
 
     // Hide keyboard when SearchByText is disposed

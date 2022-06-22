@@ -1,11 +1,14 @@
 package com.minhdtm.example.weapose.presentation.ui.sevendaysweather
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.*
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -16,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -24,6 +28,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.presentation.component.WeatherScaffold
 import com.minhdtm.example.weapose.presentation.model.DayWeatherViewData
+import com.minhdtm.example.weapose.presentation.model.factory.previewDayWeatherViewData
+import com.minhdtm.example.weapose.presentation.theme.WeaposeTheme
 import com.minhdtm.example.weapose.presentation.ui.Screen
 import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 import com.minhdtm.example.weapose.presentation.ui.home.CurrentWeatherAppBar
@@ -49,9 +55,9 @@ fun SevenDaysWeather(
     }
 
     LaunchedEffect(true) {
-        appState.getDataFromNextScreen(Constants.Key.LAT_LNG, Constants.Default.LAT_LNG_DEFAULT)?.collect {
-            if (it != LatLng(0.0, 0.0)) {
-                viewModel.getWeatherByLocation(it)
+        appState.getDataFromNextScreen(Constants.Key.LAT_LNG, Constants.Default.LAT_LNG_DEFAULT)?.collect { latLng ->
+            if (latLng != Constants.Default.LAT_LNG_DEFAULT) {
+                viewModel.getWeatherByLocation(latLng)
                 appState.removeDataFromNextScreen<LatLng>(Constants.Key.LAT_LNG)
             }
         }
@@ -65,14 +71,17 @@ fun SevenDaysWeather(
     }
 
     // Get event
-    LaunchedEffect(true) {
-        viewModel.event.collectLatest { event ->
-            when (event) {
-                is SevenDaysEvent.NavigateToSearchByText -> {
-                    appState.navigateToSearchByText(Screen.SevenDaysWeather, event.latLng)
-                }
+    LaunchedEffect(state) {
+        val navigateToSearchByText = state.navigateToSearchByText
+
+        when {
+            navigateToSearchByText != null -> {
+                appState.navigateToSearchByText(Screen.SevenDaysWeather, navigateToSearchByText)
             }
+            else -> return@LaunchedEffect
         }
+
+        viewModel.cleanEvent()
     }
 
     SevenDaysWeatherScreen(
@@ -146,7 +155,12 @@ fun ListWeatherDay(
         modifier = modifier,
         contentPadding = PaddingValues(bottom = paddingBottom + 10.dp),
     ) {
-        itemsIndexed(items = list) { _, item ->
+        items(
+            items = list,
+            key = { item ->
+                item.dateTime
+            },
+        ) { item ->
             WeatherDayItem(
                 modifier = Modifier.fillMaxWidth(),
                 item = item,
@@ -165,7 +179,9 @@ fun WeatherDayItem(
         mutableStateOf(false)
     }
 
-    Column(modifier = modifier) {
+    val transition = updateTransition(targetState = isExpanded, label = "")
+
+    Column(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
         Row(
             modifier = Modifier
                 .height(70.dp)
@@ -206,14 +222,13 @@ fun WeatherDayItem(
                         style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.secondary),
                     )
 
-
                     Text(
                         text = stringResource(id = R.string.degrees_c, item.minTemp.toString()),
                         style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.inversePrimary),
                     )
                 }
 
-                AnimatedContent(targetState = isExpanded, transitionSpec = {
+                transition.AnimatedContent(transitionSpec = {
                     if (!targetState) {
                         slideInVertically { height -> height } + fadeIn() with slideOutVertically { height -> -height } + fadeOut()
                     } else {
@@ -231,7 +246,11 @@ fun WeatherDayItem(
             }
         }
 
-        AnimatedVisibility(visible = isExpanded) {
+        transition.AnimatedVisibility(
+            visible = { it },
+            enter = expandVertically(),
+            exit = shrinkVertically(),
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -265,7 +284,7 @@ fun WeatherDayItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 5.dp),
-                    title = stringResource(id = R.string.sunrise_sunset),
+                    title = stringResource(id = R.string.sunset_sunrise),
                     description = stringResource(id = R.string.sunrise_sunset, item.sunrise, item.sunset),
                 )
             }
@@ -293,5 +312,14 @@ fun WeatherInformation(
             modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.secondary),
         )
+    }
+}
+
+@Preview(name = "Dark", uiMode = UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(name = "Light", showBackground = true)
+@Composable
+fun WeatherDayItemPreview() {
+    WeaposeTheme {
+        WeatherDayItem(item = previewDayWeatherViewData())
     }
 }

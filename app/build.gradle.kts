@@ -6,22 +6,48 @@ plugins {
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("org.jetbrains.kotlinx.kover") version "0.5.0"
 }
 
 val properties = Properties().apply {
     load(project.rootProject.file("local.properties").inputStream())
 }
 
+project.afterEvaluate {
+    tasks.koverHtmlReport {
+        group = "kover"
+        description = ""
+        dependsOn("testDebugUnitTest")
+
+        isEnabled = true
+        htmlReportDir.set(layout.buildDirectory.dir("kover_report/html_result"))
+        includes = listOf("com.minhdtm.example.weapose.*")
+        excludes = listOf(
+            "*Screen*",
+            "*_Factory*",
+            "*_HiltModules*",
+            "*di*",
+            "*_Impl*",
+            "*BuildConfig*",
+            "*Activity*",
+            "*App*",
+            "*Drawer*",
+            "*Graph*",
+            "*.theme*",
+        )
+    }
+}
+
 android {
     namespace = "com.minhdtm.example.weapose"
-    compileSdkPreview = "Tiramisu"
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.minhdtm.example.weapose"
         minSdk = 21
-        targetSdkPreview = "Tiramisu"
+        targetSdk = 33
         versionCode = 1
-        versionName = "1.0.1"
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -39,6 +65,12 @@ android {
         }
     }
 
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -48,6 +80,7 @@ android {
         jvmTarget = "11"
         freeCompilerArgs = freeCompilerArgs.toMutableList().apply {
             add("-opt-in=kotlin.RequiresOptIn")
+            add("-Xuse-experimental=androidx.compose.ui.text.ExperimentalTextApi")
         }
     }
 
@@ -67,13 +100,13 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-    implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("androidx.compose.ui:ui:1.1.1")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.1.1")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha12")
-    implementation("androidx.compose.material:material:1.2.0-beta03")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
+    implementation("androidx.activity:activity-compose:1.5.0")
+    implementation("androidx.compose.ui:ui:1.3.0-alpha01")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.3.0-alpha01")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
+    implementation("androidx.compose.material:material:1.3.0-alpha01")
 
     // Google accompanist
     implementation("com.google.accompanist:accompanist-navigation-animation:0.24.9-beta")
@@ -83,7 +116,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-flowlayout:0.24.9-beta")
 
     // Google play services
-    implementation("com.google.android.gms:play-services-location:19.0.1")
+    implementation("com.google.android.gms:play-services-location:20.0.0")
     implementation("com.google.android.gms:play-services-maps:18.0.2")
     implementation("com.google.android.libraries.places:places:2.6.0")
     implementation("com.google.maps.android:maps-compose:2.1.1")
@@ -112,12 +145,14 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.40")
 
     // Navigation
-    implementation("androidx.navigation:navigation-compose:2.4.2")
+    implementation("androidx.navigation:navigation-compose:2.5.0")
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc01")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha01")
 
+    // LiveData
+    implementation("androidx.compose.runtime:runtime-livedata:1.3.0-alpha01")
     // Gson
     implementation("com.google.code.gson:gson:2.9.0")
 
@@ -127,13 +162,20 @@ dependencies {
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
+    // Kotlin reflect
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.0")
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+
+    // MockK
+    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("io.mockk:mockk-agent-jvm:1.12.4")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.1.1")
 
-    debugImplementation("androidx.compose.ui:ui-tooling:1.1.1")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.1.1")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.3.0-alpha01")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.0-alpha01")
 }

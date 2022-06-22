@@ -2,7 +2,6 @@ package com.minhdtm.example.weapose.presentation.ui.home
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.domain.enums.ActionType
@@ -13,7 +12,6 @@ import com.minhdtm.example.weapose.domain.usecase.GetCurrentWeatherUseCase
 import com.minhdtm.example.weapose.domain.usecase.GetHourWeatherUseCase
 import com.minhdtm.example.weapose.domain.usecase.GetLocationFromTextUseCase
 import com.minhdtm.example.weapose.presentation.base.BaseViewModel
-import com.minhdtm.example.weapose.presentation.base.Event
 import com.minhdtm.example.weapose.presentation.base.ViewState
 import com.minhdtm.example.weapose.presentation.model.CurrentWeatherMapper
 import com.minhdtm.example.weapose.presentation.model.CurrentWeatherViewData
@@ -22,9 +20,10 @@ import com.minhdtm.example.weapose.presentation.model.HourWeatherViewData
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
@@ -41,14 +40,11 @@ class CurrentWeatherViewModel @Inject constructor(
     private val _state = MutableStateFlow(CurrentWeatherViewState())
     val state: StateFlow<CurrentWeatherViewState> = _state
 
-    private val _event = Channel<CurrentWeatherEvent>(Channel.BUFFERED)
-    val event = _event.receiveAsFlow()
-
     private var currentLocation = Constants.Default.LAT_LNG_DEFAULT
 
     init {
-        viewModelScope.launch {
-            _event.send(CurrentWeatherEvent.CheckPermission)
+        _state.update {
+            it.copy(isRequestPermission = true)
         }
     }
 
@@ -121,8 +117,8 @@ class CurrentWeatherViewModel @Inject constructor(
     }
 
     fun navigateToSearchByMap() {
-        callApi {
-            _event.send(CurrentWeatherEvent.NavigateToSearchByMap(latLng = currentLocation))
+        _state.update {
+            it.copy(navigateSearch = currentLocation)
         }
     }
 
@@ -137,9 +133,12 @@ class CurrentWeatherViewModel @Inject constructor(
         getCurrentWeather(currentLocation)
     }
 
-    private fun showLoading() {
+    fun cleanEvent() {
         _state.update {
-            it.copy(isLoading = true)
+            it.copy(
+                isRequestPermission = false,
+                navigateSearch = null,
+            )
         }
     }
 
@@ -165,6 +164,12 @@ class CurrentWeatherViewModel @Inject constructor(
             it.copy(isLoading = false, error = null)
         }
     }
+
+    private fun showLoading() {
+        _state.update {
+            it.copy(isLoading = true)
+        }
+    }
 }
 
 data class CurrentWeatherViewState(
@@ -173,10 +178,6 @@ data class CurrentWeatherViewState(
     val isRefresh: Boolean = false,
     val currentWeather: CurrentWeatherViewData? = null,
     val listHourlyWeatherToday: List<HourWeatherViewData> = emptyList(),
+    val navigateSearch: LatLng? = null,
+    val isRequestPermission: Boolean = false,
 ) : ViewState(isLoading, error)
-
-sealed class CurrentWeatherEvent : Event() {
-    object CheckPermission : CurrentWeatherEvent()
-
-    data class NavigateToSearchByMap(val latLng: LatLng) : CurrentWeatherEvent()
-}
