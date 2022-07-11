@@ -2,7 +2,6 @@ package com.minhdtm.example.weapose.presentation.model
 
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.text.toUpperCase
 import com.minhdtm.example.weapose.data.model.CurrentWeather
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import com.minhdtm.example.weapose.presentation.utils.toBackground
@@ -28,14 +27,14 @@ class CurrentWeatherMapper @Inject constructor() : DataModelMapper<CurrentWeathe
 
     override fun mapToViewData(model: CurrentWeather): CurrentWeatherViewData {
         val city = model.name?.uppercase() ?: ""
-        val maxTemp = model.main.tempMax?.toString() ?: ""
-        val minTemp = model.main.tempMin?.toString() ?: ""
-        val temp = model.main.temp?.toString() ?: ""
-        val weather = model.weatherItems.firstOrNull()?.description?.capitalize(Locale.current) ?: ""
-        val sunRise = model.sys.sunrise?.toDateTime(Constants.DateFormat.HH_mm, model.timezone) ?: ""
-        val wind = model.wind.speed?.toString() ?: ""
-        val humidity = model.main.humidity?.toString() ?: ""
-        val background = (model.weatherItems.firstOrNull()?.icon ?: "").toBackground()
+        val maxTemp = model.main?.tempMax?.toString() ?: ""
+        val minTemp = model.main?.tempMin?.toString() ?: ""
+        val temp = model.main?.temp?.toString() ?: ""
+        val weather = model.weatherItems?.firstOrNull()?.description?.capitalize(Locale.current) ?: ""
+        val sunRise = model.sys?.sunrise?.toDateTime(Constants.DateFormat.HH_mm, model.timezone) ?: ""
+        val wind = model.wind?.speed?.toString() ?: ""
+        val humidity = model.main?.humidity?.toString() ?: ""
+        val background = (model.weatherItems?.firstOrNull()?.icon ?: "").toBackground()
 
         return CurrentWeatherViewData(
             city = city,

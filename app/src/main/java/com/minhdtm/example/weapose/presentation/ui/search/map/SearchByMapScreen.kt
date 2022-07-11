@@ -31,7 +31,6 @@ import com.minhdtm.example.weapose.presentation.component.WeatherScaffold
 import com.minhdtm.example.weapose.presentation.theme.WeaposeTheme
 import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 import com.minhdtm.example.weapose.presentation.utils.Constants
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SearchByMap(
@@ -56,19 +55,23 @@ fun SearchByMap(
         }
     }
 
-    LaunchedEffect(true) {
-        viewModel.event.collectLatest { event ->
-            when (event) {
-                is SearchByMapEvent.PopTo -> {
+    LaunchedEffect(state) {
+        when {
+            state.popupToRoute != null -> {
+                state.address?.let { address ->
                     val params = mutableMapOf<String, Any>()
-                    params[Constants.Key.LAT_LNG] = event.latLng
-                    appState.popBackStack(popToRoute = event.toRoute, params = params)
-                }
-                is SearchByMapEvent.MoveCamera -> {
-                    cameraPositionState.move(CameraUpdateFactory.newLatLng(event.latLng))
+                    params[Constants.Key.LAT_LNG] = LatLng(address.latitude, address.longitude)
+                    appState.popBackStack(popToRoute = state.popupToRoute, params = params)
                 }
             }
+            state.moveCamera != null -> {
+                state.moveCamera?.let {
+                    cameraPositionState.move(CameraUpdateFactory.newLatLng(it))
+                }
+            }
+            else -> return@LaunchedEffect
         }
+        viewModel.cleanEvent()
     }
 
     SearchByMapScreen(

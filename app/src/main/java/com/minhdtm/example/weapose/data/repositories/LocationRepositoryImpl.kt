@@ -5,9 +5,8 @@ import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
-import androidx.compose.ui.text.intl.Locale
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -45,7 +43,7 @@ class LocationRepositoryImpl @Inject constructor(
             val cancellationTokenSource = CancellationTokenSource()
 
             fusedLocationProviderClient.getCurrentLocation(
-                LocationRequest.PRIORITY_HIGH_ACCURACY,
+                Priority.PRIORITY_HIGH_ACCURACY,
                 cancellationTokenSource.token,
             ).addOnSuccessListener { location ->
                 if (location != null) {

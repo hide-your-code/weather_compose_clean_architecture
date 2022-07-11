@@ -51,7 +51,6 @@ import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import kotlinx.coroutines.flow.collectLatest
 
-
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CurrentWeather(
@@ -101,27 +100,30 @@ fun CurrentWeather(
     }
 
     // Get event
-    LaunchedEffect(true) {
-        viewModel.event.collectLatest { event ->
-            when (event) {
-                is CurrentWeatherEvent.CheckPermission -> {
-                    when {
-                        locationPermissionState.allPermissionsGranted -> {
-                            viewModel.getCurrentLocation()
-                        }
-                        locationPermissionState.shouldShowRationale -> {
-                            viewModel.permissionIsNotGranted()
-                        }
-                        else -> {
-                            locationPermissionState.launchMultiplePermissionRequest()
-                        }
+    LaunchedEffect(state) {
+        val navigateToSearch = state.navigateSearch
+        val requestPermission = state.isRequestPermission
+
+        when {
+            requestPermission -> {
+                when {
+                    locationPermissionState.allPermissionsGranted -> {
+                        viewModel.getCurrentLocation()
+                    }
+                    locationPermissionState.shouldShowRationale -> {
+                        viewModel.permissionIsNotGranted()
+                    }
+                    else -> {
+                        locationPermissionState.launchMultiplePermissionRequest()
                     }
                 }
-                is CurrentWeatherEvent.NavigateToSearchByMap -> {
-                    appState.navigateToSearchByText(Screen.CurrentWeather, event.latLng)
-                }
             }
+            navigateToSearch != null -> {
+                appState.navigateToSearchByText(Screen.CurrentWeather, navigateToSearch)
+            }
+            else -> return@LaunchedEffect
         }
+        viewModel.cleanEvent()
     }
 
     CurrentWeatherScreen(

@@ -9,7 +9,6 @@ import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.domain.exception.WeatherException
 import com.minhdtm.example.weapose.domain.usecase.*
 import com.minhdtm.example.weapose.presentation.base.BaseViewModel
-import com.minhdtm.example.weapose.presentation.base.Event
 import com.minhdtm.example.weapose.presentation.base.ViewState
 import com.minhdtm.example.weapose.presentation.model.HistorySearchAddressViewData
 import com.minhdtm.example.weapose.presentation.model.HistorySearchAddressViewDataMapper
@@ -17,8 +16,10 @@ import com.minhdtm.example.weapose.presentation.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
@@ -40,9 +41,6 @@ class SearchByTextViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(SearchByTextViewState(addressPlaceHolder = placeHolder))
     val state: StateFlow<SearchByTextViewState> = _state
-
-    private val _event = Channel<SearchByTextEvent>(Channel.BUFFERED)
-    val event = _event.receiveAsFlow()
 
     init {
         callApi {
@@ -125,18 +123,26 @@ class SearchByTextViewModel @Inject constructor(
     }
 
     fun onNavigateToSearchByMap() {
-        callApi {
-            var latLng = Constants.Default.LAT_LNG_DEFAULT
+        var latLng = Constants.Default.LAT_LNG_DEFAULT
 
-            val fromRoute = savedStateHandle.get<String>(Constants.Key.FROM_ROUTE) ?: ""
-            val lat = savedStateHandle.get<String>(Constants.Key.LAT) ?: ""
-            val lng = savedStateHandle.get<String>(Constants.Key.LNG) ?: ""
+        val fromRoute = savedStateHandle.get<String>(Constants.Key.FROM_ROUTE) ?: ""
+        val lat = savedStateHandle.get<String>(Constants.Key.LAT) ?: ""
+        val lng = savedStateHandle.get<String>(Constants.Key.LNG) ?: ""
 
-            if (lat.isNotBlank() && lng.isNotBlank()) {
-                latLng = LatLng(lat.toDouble(), lng.toDouble())
-            }
+        if (lat.isNotBlank() && lng.isNotBlank()) {
+            latLng = LatLng(lat.toDouble(), lng.toDouble())
+        }
 
-            _event.send(SearchByTextEvent.NavigateToSearchByMap(fromRoute, latLng))
+        _state.update {
+            it.copy(navigateToSearchByMap = NavigateToSearchByMapEvent(latLng, fromRoute))
+        }
+    }
+
+    fun cleanEvent() {
+        _state.update {
+            it.copy(
+                navigateToSearchByMap = null,
+            )
         }
     }
 }
@@ -148,8 +154,10 @@ data class SearchByTextViewState(
     val listSearch: List<HistorySearchAddressViewData> = emptyList(),
     val addressPlaceHolder: List<String> = emptyList(),
     val listResult: List<AutocompletePrediction> = emptyList(),
+    val navigateToSearchByMap: NavigateToSearchByMapEvent? = null,
 ) : ViewState(isLoading, error)
 
-sealed class SearchByTextEvent : Event() {
-    data class NavigateToSearchByMap(val fromRoute: String, val latLng: LatLng) : SearchByTextEvent()
-}
+data class NavigateToSearchByMapEvent(
+    val latLng: LatLng,
+    val fromRoute: String,
+)

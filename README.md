@@ -13,7 +13,6 @@ I want to say thanks for those people to help me to make this app.
 
 ## :hammer: How to build app
 
-- Using android 13 and above to build app.
 - Using the newest version of Android Studio Canary.
 - You must add `BASE_URL`, `API_KEY` and `MAPS_API_KEY` inside `local.properties` to build and run Weapose app, like the code below:
 
@@ -50,6 +49,12 @@ Weapose is built according to the Clean Architecture model combined with the MVV
 
 - Guild to app architecture by Google Android.
 - Clean architectur by Uncle Bob.
+
+## :mag_right: Unit test
+
+- Using [MockK](https://mockk.io/) to write unit test.
+- Using [Kotlin Reflection](https://kotlinlang.org/docs/reflection.html) to access the private method, private property, etc.
+- Using [Kotlin Kover](https://github.com/Kotlin/kotlinx-kover) to generate the test coverage. To generate, you just run command ` ./gradlew koverHtmlReport`.
 
 ## :tram: Data flow
 

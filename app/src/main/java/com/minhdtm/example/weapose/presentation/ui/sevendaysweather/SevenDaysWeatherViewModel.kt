@@ -7,16 +7,13 @@ import com.minhdtm.example.weapose.domain.usecase.GetCurrentAddressUseCase
 import com.minhdtm.example.weapose.domain.usecase.GetLocationFromTextUseCase
 import com.minhdtm.example.weapose.domain.usecase.GetSevenDaysWeatherUseCase
 import com.minhdtm.example.weapose.presentation.base.BaseViewModel
-import com.minhdtm.example.weapose.presentation.base.Event
 import com.minhdtm.example.weapose.presentation.base.ViewState
 import com.minhdtm.example.weapose.presentation.model.DayWeatherViewData
 import com.minhdtm.example.weapose.presentation.model.SevenWeatherViewDataMapper
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -30,9 +27,6 @@ class SevenDaysWeatherViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val _state = MutableStateFlow(SevenDaysViewState(isLoading = true))
     val state: StateFlow<SevenDaysViewState> = _state
-
-    private val _event = Channel<SevenDaysEvent>(Channel.BUFFERED)
-    val event = _event.receiveAsFlow()
 
     private var currentLocation = Constants.Default.LAT_LNG_DEFAULT
 
@@ -106,8 +100,8 @@ class SevenDaysWeatherViewModel @Inject constructor(
     }
 
     fun onNavigateToSearch() {
-        callApi {
-            _event.send(SevenDaysEvent.NavigateToSearchByText(currentLocation))
+        _state.update {
+            it.copy(navigateToSearchByText = currentLocation)
         }
     }
 
@@ -116,7 +110,7 @@ class SevenDaysWeatherViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     isRefresh = isShowRefresh,
-                    isLoading = true,
+                    isLoading = false,
                 )
             }
 
@@ -152,6 +146,14 @@ class SevenDaysWeatherViewModel @Inject constructor(
             it.copy(isLoading = false, error = null)
         }
     }
+
+    fun cleanEvent() {
+        _state.update {
+            it.copy(
+                navigateToSearchByText = null,
+            )
+        }
+    }
 }
 
 data class SevenDaysViewState(
@@ -159,9 +161,6 @@ data class SevenDaysViewState(
     override val error: WeatherException? = null,
     val isRefresh: Boolean = false,
     val address: String = "",
-    val listSevenDays: List<DayWeatherViewData> = emptyList()
+    val listSevenDays: List<DayWeatherViewData> = emptyList(),
+    val navigateToSearchByText: LatLng? = null,
 ) : ViewState(isLoading, error)
-
-sealed class SevenDaysEvent : Event() {
-    data class NavigateToSearchByText(val latLng: LatLng) : SevenDaysEvent()
-}

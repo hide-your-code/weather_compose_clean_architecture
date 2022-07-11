@@ -10,12 +10,13 @@ import com.minhdtm.example.weapose.domain.usecase.GetCurrentLocationUseCase
 import com.minhdtm.example.weapose.domain.usecase.GetDarkModeGoogleMapUseCase
 import com.minhdtm.example.weapose.domain.usecase.SetDarkModeGoogleMapUseCase
 import com.minhdtm.example.weapose.presentation.base.BaseViewModel
-import com.minhdtm.example.weapose.presentation.base.Event
 import com.minhdtm.example.weapose.presentation.base.ViewState
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,9 +29,6 @@ class SearchByMapViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val _state = MutableStateFlow(SearchByMapViewState())
     val state: StateFlow<SearchByMapViewState> = _state
-
-    private val _event = Channel<SearchByMapEvent>(Channel.BUFFERED)
-    val event = _event.receiveAsFlow()
 
     init {
         callApi {
@@ -45,10 +43,9 @@ class SearchByMapViewModel @Inject constructor(
             savedStateHandle.getStateFlow(Constants.Key.LAT, "").zip(
                 savedStateHandle.getStateFlow(Constants.Key.LNG, ""),
                 transform = { lat, lng ->
-                    Pair(lat, lng)
+                    LatLng(lat.toDouble(), lng.toDouble())
                 },
-            ).collect { latAndLng ->
-                val latLng = LatLng(latAndLng.first.toDouble(), latAndLng.second.toDouble())
+            ).collect { latLng ->
                 if (latLng != Constants.Default.LAT_LNG_DEFAULT) {
                     setMarker(latLng)
                 }
@@ -65,7 +62,9 @@ class SearchByMapViewModel @Inject constructor(
 
     fun setMarker(latLng: LatLng) {
         callApi {
-            _event.send(SearchByMapEvent.MoveCamera(latLng))
+            _state.update {
+                it.copy(moveCamera = latLng)
+            }
 
             getAddressFromLocationUseCase(GetAddressFromLocationUseCase.Params(latLng)).collect { address ->
                 _state.update {
@@ -75,12 +74,6 @@ class SearchByMapViewModel @Inject constructor(
                     )
                 }
             }
-        }
-    }
-
-    override fun hideError() {
-        _state.update {
-            it.copy(error = null)
         }
     }
 
@@ -94,15 +87,30 @@ class SearchByMapViewModel @Inject constructor(
 
     fun onClickDone() {
         callApi {
-            val lat = _state.value.address?.latitude
-            val lng = _state.value.address?.longitude
-
             val toRoute = savedStateHandle.get<String>(Constants.Key.FROM_ROUTE)
 
-            if (lat != null && lng != null && !toRoute.isNullOrBlank()) {
-                val latLng = LatLng(lat, lng)
-                _event.send(SearchByMapEvent.PopTo(toRoute, latLng))
+            if (!toRoute.isNullOrBlank()) {
+                _state.update {
+                    it.copy(
+                        popupToRoute = toRoute,
+                    )
+                }
             }
+        }
+    }
+
+    fun cleanEvent() {
+        _state.update {
+            it.copy(
+                popupToRoute = null,
+                moveCamera = null,
+            )
+        }
+    }
+
+    override fun hideError() {
+        _state.update {
+            it.copy(error = null)
         }
     }
 }
@@ -113,10 +121,6 @@ data class SearchByMapViewState(
     val isDarkMode: Boolean = false,
     val marker: MarkerState? = null,
     val address: Address? = null,
+    val popupToRoute: String? = null,
+    val moveCamera: LatLng? = null,
 ) : ViewState(isLoading, error)
-
-sealed class SearchByMapEvent : Event() {
-    data class PopTo(val toRoute: String, val latLng: LatLng) : SearchByMapEvent()
-
-    data class MoveCamera(val latLng: LatLng) : SearchByMapEvent()
-}

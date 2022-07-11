@@ -8,7 +8,7 @@
     <string name="humidity">Humidity</string>
     <string name="address">Address</string>
     <string name="uv_index">UV index</string>
-    <string name="sunset_sunrise">Sunset/Sunrise</string>
+    <string name="sunset_sunrise">Sunset - Sunrise</string>
 
     <string name="retry">Retry</string>
     <string name="invalid">Invalid</string>
