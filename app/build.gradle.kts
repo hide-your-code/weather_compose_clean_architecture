@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat
 import java.util.*
 
 plugins {
@@ -54,14 +55,17 @@ android {
             useSupportLibrary = true
         }
 
+        val dateTime = SimpleDateFormat("yyMMdd").format(Date().time)
+        setProperty("archivesBaseName", "weapose-${versionName}-${dateTime}")
+
         buildConfigField("String", "API_KEY", properties.getProperty("API_KEY"))
         buildConfigField("String", "BASE_URL", properties.getProperty("BASE_URL"))
     }
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro", "retrofit2.pro", "gson.pro")
         }
     }
 
