@@ -58,7 +58,6 @@ android {
         val dateTime = SimpleDateFormat("yyMMdd").format(Date().time)
         setProperty("archivesBaseName", "weapose-${versionName}-${dateTime}")
 
-        buildConfigField("String", "API_KEY", properties.getProperty("API_KEY"))
         buildConfigField("String", "BASE_URL", properties.getProperty("BASE_URL"))
     }
 
@@ -105,12 +104,18 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
-    implementation("androidx.activity:activity-compose:1.5.0")
-    implementation("androidx.compose.ui:ui:1.3.0-alpha01")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.3.0-alpha01")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
-    implementation("androidx.compose.material:material:1.3.0-alpha01")
+    implementation("androidx.activity:activity-compose:1.5.1")
+
+    // Compose ui
+    implementation("androidx.compose.ui:ui:1.3.0-alpha02")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.3.0-alpha02")
+
+    // Material
+    implementation("androidx.compose.material3:material3:1.0.0-alpha15")
+    implementation("androidx.compose.material:material:1.3.0-alpha02")
+
+    // Work manager
+    implementation("androidx.work:work-runtime-ktx:2.8.0-alpha02")
 
     // Google accompanist
     implementation("com.google.accompanist:accompanist-navigation-animation:0.24.9-beta")
@@ -121,42 +126,48 @@ dependencies {
 
     // Google play services
     implementation("com.google.android.gms:play-services-location:20.0.0")
-    implementation("com.google.android.gms:play-services-maps:18.0.2")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
     implementation("com.google.android.libraries.places:places:2.6.0")
     implementation("com.google.maps.android:maps-compose:2.1.1")
 
     // Coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Okhttp
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
     // Room
-    implementation("androidx.room:room-runtime:2.4.2")
-    implementation("androidx.room:room-ktx:2.4.2")
-    annotationProcessor("androidx.room:room-compiler:2.4.2")
-    kapt("androidx.room:room-compiler:2.4.2")
+    implementation("androidx.room:room-runtime:2.4.3")
+    implementation("androidx.room:room-ktx:2.4.3")
+    annotationProcessor("androidx.room:room-compiler:2.4.3")
+    kapt("androidx.room:room-compiler:2.4.3")
 
     // Hilt
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation("com.google.dagger:hilt-android:2.40")
-    kapt("com.google.dagger:hilt-android-compiler:2.40")
+    implementation("androidx.hilt:hilt-work:1.0.0")
+    implementation("com.google.dagger:hilt-android:2.42")
+    kapt("com.google.dagger:hilt-android-compiler:2.42")
 
     // Navigation
-    implementation("androidx.navigation:navigation-compose:2.5.0")
+    implementation("androidx.navigation:navigation-compose:2.5.1")
+
+    // Lifecycle
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha01")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha01")
 
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha01")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha01")
 
     // LiveData
-    implementation("androidx.compose.runtime:runtime-livedata:1.3.0-alpha01")
+    implementation("androidx.compose.runtime:runtime-livedata:1.3.0-alpha02")
+
     // Gson
     implementation("com.google.code.gson:gson:2.9.0")
 
@@ -170,7 +181,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.0")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.3")
 
     // MockK
     testImplementation("io.mockk:mockk:1.12.4")
@@ -178,8 +189,8 @@ dependencies {
 
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.1.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.0")
 
-    debugImplementation("androidx.compose.ui:ui-tooling:1.3.0-alpha01")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.0-alpha01")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.3.0-alpha02")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.0-alpha02")
 }
