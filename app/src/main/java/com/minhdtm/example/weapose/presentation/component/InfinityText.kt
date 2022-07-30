@@ -5,7 +5,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
-import timber.log.Timber
 
 private suspend fun infinityTextChanged(
     texts: List<String>,

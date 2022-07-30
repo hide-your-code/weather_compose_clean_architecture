@@ -101,8 +101,10 @@ fun WeatherApp(appState: WeatherAppState = rememberWeatherAppState()) {
         ) {
             AnimatedNavHost(
                 navController = appState.controller,
-                startDestination = NestedGraph.HOME.route,
+                startDestination = NestedGraph.SPLASH.route,
             ) {
+                splash(appState)
+
                 home(appState)
             }
         }
@@ -206,7 +208,6 @@ fun ColumnScope.WeatherDrawerContent(
     )
 
     Spacer(modifier = Modifier.weight(1f))
-
 
     NavigationDrawerLabel {
         Text(text = "Build version: ${BuildConfig.VERSION_NAME}")

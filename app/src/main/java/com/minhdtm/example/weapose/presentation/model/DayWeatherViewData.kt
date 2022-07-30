@@ -6,6 +6,7 @@ import com.minhdtm.example.weapose.data.model.Daily
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import com.minhdtm.example.weapose.presentation.utils.toDateTime
 import com.minhdtm.example.weapose.presentation.utils.toIcon
+import java.util.*
 import javax.inject.Inject
 
 data class DayWeatherViewData(

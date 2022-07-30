@@ -6,19 +6,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.minhdtm.example.weapose.presentation.component.WeatherScaffold
 import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun Information(
     appState: WeatherAppState,
     viewModel: InformationViewModel = viewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     InformationScreen(
         state = state,

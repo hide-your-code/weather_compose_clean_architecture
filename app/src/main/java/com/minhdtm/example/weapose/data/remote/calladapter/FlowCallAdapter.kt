@@ -25,7 +25,9 @@ class FlowCallAdapter<T>(
                     try {
                         cancellableContinuation.resume(response.body()!!)
                     } catch (e: Exception) {
-                        cancellableContinuation.resumeWithException(mapper.mapperToWeatherException(asResponseException(e, response)))
+                        cancellableContinuation.resumeWithException(
+                            mapper.mapperToWeatherException(asResponseException(e, response))
+                        )
                     }
                 }
 
@@ -41,28 +43,21 @@ class FlowCallAdapter<T>(
     private fun asResponseException(
         throwable: Throwable,
         res: Response<T>? = null,
-    ): ResponseException {
-        // We had non-200 http error
-        if (throwable is HttpException) {
+    ): ResponseException = when {
+        throwable is HttpException -> {
             val response = throwable.response()
 
-            return when (throwable.code()) {
-                // On out api 422's get metadata in the response. Adjust logic here based on your needs
-                422 -> ResponseException.httpObject(response, retrofit)
-                else -> ResponseException.http(response, retrofit)
-            }
+            if (throwable.code() == 422) ResponseException.httpObject(response, retrofit)
+            else ResponseException.http(response, retrofit)
         }
-
-        if (res != null) {
-            return ResponseException.httpObject(res, retrofit)
+        res != null -> {
+            ResponseException.httpObject(res, retrofit)
         }
-
-        // A network error happened
-        if (throwable is IOException) {
-            return ResponseException.network(throwable)
+        throwable is IOException -> {
+            ResponseException.network(throwable)
         }
-
-        // We don't know what happened. We need to simply convert to an unknown error
-        return ResponseException.unexpected(throwable)
+        else -> {
+            ResponseException.unexpected(throwable)
+        }
     }
 }

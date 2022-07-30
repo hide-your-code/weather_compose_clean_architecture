@@ -21,6 +21,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -32,13 +34,16 @@ import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import com.minhdtm.example.weapose.presentation.utils.clearFocusOnKeyboardDismiss
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(
+    ExperimentalComposeUiApi::class,
+    ExperimentalLifecycleComposeApi::class,
+)
 @Composable
 fun SearchByText(
     appState: WeatherAppState,
     viewModel: SearchByTextViewModel = viewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     var text by rememberSaveable {
         mutableStateOf("")
@@ -299,6 +304,7 @@ fun ItemResultSearch(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchByTextAppBar(
     modifier: Modifier = Modifier,

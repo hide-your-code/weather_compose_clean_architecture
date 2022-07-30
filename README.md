@@ -11,6 +11,12 @@ This app is inspired by:
 
 I want to say thanks for those people to help me to make this app.
 
+## :tada: Ready on Google Play
+
+Now, you can download it on Google Play Store. Install it and give me your feedback!
+
+[!["Get it on Google Play"](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.minhdtm.example.weapose&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
+
 ## :hammer: How to build app
 
 - Using the newest version of Android Studio Canary.

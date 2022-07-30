@@ -9,25 +9,25 @@ import timber.log.Timber
 import java.io.IOException
 
 class ResponseException(
-    private val _message: String? = null,
-    private val _retrofit: Retrofit? = null,
-    private val _response: Response<*>? = null,
-    private val _throwable: Throwable? = null,
-    private val _kind: Kind,
-) : Throwable(_message) {
+    override val message: String? = null,
+    private val retrofit: Retrofit? = null,
+    private val response: Response<*>? = null,
+    private val throwable: Throwable? = null,
+    private val kind: Kind? = null,
+) : Throwable(message) {
     enum class Kind {
         HTTP, HTTP_WITH_OBJECT, NETWORK, PREFERENCE, UNEXPECTED,
     }
 
     private var _errorServer: ServerErrorResponse? = null
 
-    fun getKind() = _kind
+    fun getKind() = kind
 
-    fun getThrowable() = _throwable
+    fun getThrowable() = throwable
 
-    fun getResponse() = _response
+    fun getResponse() = response
 
-    fun getRetrofit() = _retrofit
+    fun getRetrofit() = retrofit
 
     /**
      * The data returned from the server in the response body
@@ -35,7 +35,7 @@ class ResponseException(
     fun getErrorData(): ServerErrorResponse? = _errorServer
 
     fun deserializeServerError() {
-        val responseBody = _response?.errorBody()
+        val responseBody = response?.errorBody()
         if (responseBody != null) {
             try {
                 _errorServer = responseBody.getErrorBodyAs(ServerErrorResponse::class.java)
@@ -54,11 +54,11 @@ class ResponseException(
 
     @Throws(IOException::class)
     fun <T> ResponseBody.getErrorBodyAs(type: Class<T>): T? {
-        if (_retrofit == null) {
+        if (retrofit == null) {
             return null
         }
 
-        val converter: Converter<ResponseBody, T> = _retrofit.responseBodyConverter(type, arrayOfNulls<Annotation>(0))
+        val converter: Converter<ResponseBody, T> = retrofit.responseBodyConverter(type, arrayOfNulls<Annotation>(0))
         return converter.convert(this)
     }
 
@@ -66,41 +66,41 @@ class ResponseException(
         fun http(response: Response<*>?, retrofit: Retrofit?): ResponseException {
             val message = response?.code().toString() + " - " + response?.message().toString()
             return ResponseException(
-                _message = message,
-                _response = response,
-                _kind = Kind.HTTP,
-                _retrofit = retrofit,
+                message = message,
+                response = response,
+                retrofit = retrofit,
+                kind = Kind.HTTP,
             )
         }
 
         fun httpObject(response: Response<*>?, retrofit: Retrofit?): ResponseException {
             val message = response?.code().toString() + " - " + response?.message().toString()
             val error = ResponseException(
-                _message = message,
-                _retrofit = retrofit,
-                _kind = Kind.HTTP_WITH_OBJECT,
-                _response = response,
+                message = message,
+                retrofit = retrofit,
+                kind = Kind.HTTP_WITH_OBJECT,
+                response = response,
             )
             error.deserializeServerError()
             return error
         }
 
         fun network(exception: IOException): ResponseException = ResponseException(
-            _message = exception.message,
-            _throwable = exception,
-            _kind = Kind.NETWORK,
+            message = exception.message,
+            throwable = exception,
+            kind = Kind.NETWORK,
         )
 
         fun preferences(exception: Throwable): ResponseException = ResponseException(
-            _message = exception.message,
-            _throwable = exception,
-            _kind = Kind.PREFERENCE,
+            message = exception.message,
+            throwable = exception,
+            kind = Kind.PREFERENCE,
         )
 
         fun unexpected(throwable: Throwable): ResponseException = ResponseException(
-            _message = throwable.message,
-            _throwable = throwable,
-            _kind = Kind.UNEXPECTED,
+            message = throwable.message,
+            throwable = throwable,
+            kind = Kind.UNEXPECTED,
         )
     }
 }
