@@ -57,7 +57,7 @@ jobs:
       - name: Define version code with offset
         env:
           RUN_NUMBER: ${{ github.run_number }}
-          INITIAL_VERSION_CODE: 17
+          INITIAL_VERSION_CODE: 29
         run: |
           VERSION_CODE=$((INITIAL_VERSION_CODE + RUN_NUMBER))
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
