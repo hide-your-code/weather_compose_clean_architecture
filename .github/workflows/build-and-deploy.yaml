@@ -65,7 +65,7 @@ jobs:
       - name: Update version code
         uses: chkfung/android-version-actions@v1.1
         with:
-          gradlePath: app/build.gradle.kts
+          gradlePath: android/app/build.gradle.kts
           versionCode: ${{ env.version_code }}
 
       - name: Build & deploy Android release
