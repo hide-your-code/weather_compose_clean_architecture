@@ -33,7 +33,7 @@ platform :android do
   desc "Deploy a new version to the Google Play with internal testing"
   lane :deploy do
     gradle(
-      task: "bundle",
+      task: "clean bundle",
       build_type: "Release",
       print_command: false,
       properties: {
@@ -60,9 +60,18 @@ platform :android do
       gradle(
         task: "clean bundle",
         build_type: "Release",
+        print_command: false,
+          properties: {
+            "android.injected.signing.store.file" => ENV["KEYSTORE_FILE"],
+            "android.injected.signing.store.password" => ENV["STORE_PASSWORD"],
+            "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
+            "android.injected.signing.key.password" => ENV["KEY_PASSWORD"],
+          }
       )
       firebase_app_distribution(
         android_artifact_type: "AAB",
+        app: ENV["FIREBASE_APP_ID"],
+        firebase_cli_token: ENV["FIREBASE_TOKEN"],
         release_notes: "Lots of amazing new features to test out!"
       )
   end

@@ -1,4 +1,4 @@
-name: Android Build & Deploy
+name: Build & Deploy to internal testing
 
 on:
   push:
@@ -58,15 +58,15 @@ jobs:
         env:
           RUN_NUMBER: ${{ github.run_number }}
           INITIAL_VERSION_CODE: 5
-        run:
+        run: |
           VERSION_CODE=$((INITIAL_VERSION_CODE + RUN_NUMBER))
-          echo "version_code=$VERSION_CODE" >> $GITHUB_ENV
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
 
       - name: Update version code
         uses: chkfung/android-version-actions@v1.1
         with:
-          gradlePath: android/app/build.gradle.kts
-          versionCode: ${{ env.version_code }}
+          gradlePath: app/build.gradle.kts
+          versionCode: ${{ env.VERSION_CODE }}
 
       - name: Build & deploy Android release
         run: bundle exec fastlane android deploy
@@ -76,6 +76,16 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.PASSWORD_KEY_ALIAS }}
           ANDROID_JSON_KEY_FILE: ${{ steps.google_play_account_file.outputs.filePath }}
+
+      #- name: Build & deploy to Firebase App Distribution
+      #  run: bundle exec fastlane android distribute
+      #  env:
+      #    KEYSTORE_FILE: ${{ steps.keystore_file.outputs.filePath }}
+      #    STORE_PASSWORD: ${{ secrets.PASSWORD_STORE }}
+      #    KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      #    KEY_PASSWORD: ${{ secrets.PASSWORD_KEY_ALIAS }}
+      #    FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+      #    FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
