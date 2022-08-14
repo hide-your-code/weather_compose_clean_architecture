@@ -19,15 +19,9 @@ fun Long.toDateTime(format: String, zoneId: Int? = null): String {
     val language = androidx.compose.ui.text.intl.Locale.current.language
     val locale = Locale(language)
 
-    return try {
-        SimpleDateFormat(format, locale).apply {
-            timeZone = TimeZone.getDefault().apply { zoneId?.let { rawOffset = it } }
-        }.format(date)
-    } catch (e: Exception) {
-        SimpleDateFormat(format, locale).apply {
-            timeZone = TimeZone.getDefault().apply { zoneId?.let { rawOffset = it } }
-        }.format(date)
-    }
+    return SimpleDateFormat(format, locale).apply {
+        timeZone = TimeZone.getDefault().apply { zoneId?.let { rawOffset = it } }
+    }.format(date)
 }
 
 

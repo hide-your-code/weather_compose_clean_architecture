@@ -1,0 +1,85 @@
+name: Android Build & Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up ruby env
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+
+      - name: Load keys from secrets
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+        run: printf "API_KEY=\"$API_KEY\"\nBASE_URL=\"$BASE_URL\"\nMAPS_API_KEY=\"$MAPS_API_KEY\"" > ./local.properties
+
+      - name: Caching gradle
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+
+      - name: Copy gradle properties file
+        run: mkdir -p ~/.gradle ; cp .github/gradle/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - name: Decode Google Play Account file
+        uses: timheuer/base64-to-file@v1.1
+        id: google_play_account_file
+        with:
+          fileName: "google_play_account_key.json"
+          encodedString: ${{ secrets.GOOGLE_PLAY_FILE_KEY }}
+
+      - name: Decode Keystore file
+        uses: timheuer/base64-to-file@v1.1
+        id: keystore_file
+        with:
+          fileName: "weapose.keystore"
+          encodedString: ${{ secrets.FILE_KEY_STORE }}
+
+      - name: Define version code with offset
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+          INITIAL_VERSION_CODE: 5
+        run:
+          VERSION_CODE=$((INITIAL_VERSION_CODE + RUN_NUMBER))
+          echo "version_code=$VERSION_CODE" >> $GITHUB_ENV
+
+      - name: Update version code
+        uses: chkfung/android-version-actions@v1.1
+        with:
+          gradlePath: app/build.gradle.kts
+          versionCode: ${{ env.version_code }}
+
+      - name: Build & deploy Android release
+        run: bundle exec fastlane android deploy
+        env:
+          KEYSTORE_FILE: ${{ steps.keystore_file.outputs.filePath }}
+          STORE_PASSWORD: ${{ secrets.PASSWORD_STORE }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.PASSWORD_KEY_ALIAS }}
+          ANDROID_JSON_KEY_FILE: ${{ steps.google_play_account_file.outputs.filePath }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: assets
+          path: |
+            ${{ github.workspace }}/app/build/outputs/bundle/release

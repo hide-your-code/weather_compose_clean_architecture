@@ -27,6 +27,8 @@ import com.minhdtm.example.weapose.presentation.ui.search.map.SearchByMap
 import com.minhdtm.example.weapose.presentation.ui.search.text.SearchByText
 import com.minhdtm.example.weapose.presentation.ui.settings.Settings
 import com.minhdtm.example.weapose.presentation.ui.sevendaysweather.SevenDaysWeather
+import com.minhdtm.example.weapose.presentation.ui.splash.Splash
+import com.minhdtm.example.weapose.presentation.ui.splash.SplashScreen
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -36,6 +38,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 sealed class Screen(val route: String) {
+    object Splash : Screen("splash")
+
     object CurrentWeather : Screen("current_weather")
 
     object SevenDaysWeather : Screen("seven_days_weather")
@@ -51,6 +55,7 @@ sealed class Screen(val route: String) {
 
 enum class NestedGraph(val route: String) {
     HOME(route = "home_nav"),
+    SPLASH(route = "splash_nav"),
 }
 
 enum class DrawerTab(
@@ -78,6 +83,35 @@ enum class DrawerTab(
         title = R.string.information_tab,
         icon = R.drawable.ic_info,
     ),
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+fun NavGraphBuilder.splash(appState: WeatherAppState) {
+    navigation(
+        route = NestedGraph.SPLASH.route,
+        startDestination = Screen.Splash.route,
+    ) {
+        composable(
+            route = Screen.Splash.route,
+            enterTransition = {
+                slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+            },
+            exitTransition = {
+                slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+            },
+            popEnterTransition = {
+                slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+            },
+            popExitTransition = {
+                slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+            },
+        ) {
+            Splash(
+                appState = appState,
+                viewModel = hiltViewModel(),
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -307,6 +341,16 @@ class WeatherAppState(
                 controller.getBackStackEntry(popToRoute).savedStateHandle[data.key] = data.value
             }
             controller.popBackStack(route = popToRoute, inclusive = false)
+        }
+    }
+
+    fun navigateToHome() {
+        closeDrawer()
+
+        controller.navigate(route = NestedGraph.HOME.route) {
+            popUpTo(Screen.CurrentWeather.route) {
+                inclusive = true
+            }
         }
     }
 

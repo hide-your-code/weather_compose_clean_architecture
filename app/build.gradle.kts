@@ -8,6 +8,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("org.jetbrains.kotlinx.kover") version "0.5.0"
+    id("io.gitlab.arturbosch.detekt") version "1.21.0"
 }
 
 val properties = Properties().apply {
@@ -37,6 +38,22 @@ project.afterEvaluate {
             "*.theme*",
         )
     }
+
+    detekt {
+        toolVersion = "1.21.0"
+        basePath = "$rootDir"
+        config = files("$rootDir/config/detekt/detekt_config.yml")
+        buildUponDefaultConfig = true
+    }
+
+    tasks.detekt.configure {
+        reports {
+            html.required.set(true)
+            sarif.required.set(true)
+            html.outputLocation.set(file("$rootDir/reports/detekt.html"))
+            sarif.outputLocation.set(file("$rootDir/reports/detekt.sarif"))
+        }
+    }
 }
 
 android {
@@ -47,8 +64,8 @@ android {
         applicationId = "com.minhdtm.example.weapose"
         minSdk = 21
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0.2"
+        versionCode = 5
+        versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -179,6 +196,9 @@ dependencies {
 
     // Kotlin reflect
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.0")
+
+    // Lottie
+    implementation("com.airbnb.android:lottie-compose:5.2.0")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.3")
