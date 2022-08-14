@@ -33,7 +33,7 @@ class SevenWeatherViewDataMapper @Inject constructor() : DataModelMapper<Daily, 
         val weatherDetail = model.weather?.firstOrNull()?.description?.capitalize(Locale.current) ?: ""
         val maxTemp = model.temp?.max ?: 0.0
         val minTemp = model.temp?.min ?: 0.0
-        val windSpeed = String.format("%.1f", model.windSpeed?.times(3.6) ?: 0.0)
+        val windSpeed = String.format(java.util.Locale.US, "%.1f", model.windSpeed?.times(3.6) ?: 0.0)
         val humidity = model.humidity ?: 0
         val uvIndex = model.uvi ?: 0.0
         val sunrise = model.sunrise?.times(1000)?.toDateTime(Constants.DateFormat.HH_mm) ?: ""
