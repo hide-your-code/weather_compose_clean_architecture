@@ -28,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.*
+import androidx.compose.material.TopAppBar
 import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.presentation.component.WeatherScaffold
 import com.minhdtm.example.weapose.presentation.theme.WeaposeTheme
@@ -218,18 +219,18 @@ fun ResultMap(
     }
 }
 
-@OptIn(
-    ExperimentalAnimationApi::class,
-    ExperimentalMaterial3Api::class,
-)
+@OptIn(ExperimentalAnimationApi::class,)
 @Composable
 fun SearchAppBar(
     isDarkMode: Boolean,
     onBack: () -> Unit = {},
     onChangeModeGoogleMap: () -> Unit = {},
 ) {
-    SmallTopAppBar(modifier = Modifier.statusBarsPadding(),
-        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+    TopAppBar(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
+        backgroundColor = Color.Transparent,
+        contentColor = Color.Transparent,
+        elevation = 0.dp,
         title = {
 
         },
@@ -291,15 +292,25 @@ fun SearchAppBarPreview_Light() {
 @Composable
 fun SearchAppBarPreview_Dark() {
     MaterialTheme {
-        SearchAppBar(isDarkMode = false)
+        SearchAppBar(isDarkMode = true)
     }
 }
 
 @Preview(name = "Light")
 @Preview(name = "Dark", uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun ResultPreview_Light() {
+fun ResultPreview() {
     MaterialTheme {
         ResultMap(modifier = Modifier.fillMaxWidth())
+    }
+}
+
+@Preview
+@Composable
+fun SearchByMapPreview() {
+    MaterialTheme {
+        SearchByMapScreen(
+            state = SearchByMapViewState()
+        )
     }
 }

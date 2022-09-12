@@ -28,7 +28,6 @@ import com.minhdtm.example.weapose.presentation.ui.search.text.SearchByText
 import com.minhdtm.example.weapose.presentation.ui.settings.Settings
 import com.minhdtm.example.weapose.presentation.ui.sevendaysweather.SevenDaysWeather
 import com.minhdtm.example.weapose.presentation.ui.splash.Splash
-import com.minhdtm.example.weapose.presentation.ui.splash.SplashScreen
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -54,8 +53,7 @@ sealed class Screen(val route: String) {
 }
 
 enum class NestedGraph(val route: String) {
-    HOME(route = "home_nav"),
-    SPLASH(route = "splash_nav"),
+    HOME(route = "home_nav"), SPLASH(route = "splash_nav"),
 }
 
 enum class DrawerTab(
@@ -346,9 +344,8 @@ class WeatherAppState(
 
     fun navigateToHome() {
         closeDrawer()
-
-        controller.navigate(route = NestedGraph.HOME.route) {
-            popUpTo(Screen.CurrentWeather.route) {
+        controller.navigate(route = Screen.CurrentWeather.route) {
+            popUpTo(Screen.Splash.route) {
                 inclusive = true
             }
         }

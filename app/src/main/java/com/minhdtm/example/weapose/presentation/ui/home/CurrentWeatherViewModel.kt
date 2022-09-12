@@ -20,6 +20,7 @@ import com.minhdtm.example.weapose.presentation.model.HourWeatherViewData
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

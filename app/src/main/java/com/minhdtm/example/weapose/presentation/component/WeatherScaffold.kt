@@ -1,9 +1,6 @@
 package com.minhdtm.example.weapose.presentation.component
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,7 +27,8 @@ fun <VS : ViewState> WeatherScaffold(
     content: @Composable (PaddingValues, VS) -> Unit,
 ) {
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = topBar,
         bottomBar = bottomBar,
         snackbarHost = {
