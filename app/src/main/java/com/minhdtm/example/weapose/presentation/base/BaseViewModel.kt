@@ -3,11 +3,10 @@ package com.minhdtm.example.weapose.presentation.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.minhdtm.example.weapose.domain.exception.WeatherException
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 open class BaseViewModel : ViewModel() {
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
@@ -32,8 +31,12 @@ open class BaseViewModel : ViewModel() {
 
     open fun hideLoading() {}
 
-    fun callApi(api: suspend CoroutineScope.() -> Unit) {
-        viewModelScope.launch(coroutineExceptionHandler) {
+    fun callApi(
+        context: CoroutineContext = EmptyCoroutineContext,
+        start: CoroutineStart = CoroutineStart.DEFAULT,
+        api: suspend CoroutineScope.() -> Unit,
+    ) {
+        viewModelScope.launch(context + coroutineExceptionHandler, start) {
             callApi = api
 
             job = launch {

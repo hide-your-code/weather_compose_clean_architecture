@@ -63,41 +63,45 @@ fun WeatherApp(appState: WeatherAppState = rememberWeatherAppState()) {
         },
         gesturesEnabled = appState.shouldEnableGesture,
         drawerContent = {
-            WeatherDrawerContent(
-                selectedItem = appState.drawerItemSelected,
-                onClickCurrentWeather = {
-                    if (!appState.currentDestinationIs(Screen.CurrentWeather.route)) {
-                        appState.navigateToCurrentWeather()
-                    } else {
-                        appState.closeDrawer()
-                    }
-                },
-                onClickSevenDaysWeather = {
-                    if (!appState.currentDestinationIs(Screen.SevenDaysWeather.route)) {
-                        appState.navigateToSevenDaysWeather()
-                    } else {
-                        appState.closeDrawer()
-                    }
-                },
-                onClickSettings = {
-                    if (!appState.currentDestinationIs(Screen.Settings.route)) {
-                        appState.navigateToSettings()
-                    } else {
-                        appState.closeDrawer()
-                    }
-                },
-                onClickInformation = {
-                    if (!appState.currentDestinationIs(Screen.Info.route)) {
-                        appState.navigateToInformation()
-                    } else {
-                        appState.closeDrawer()
-                    }
-                },
-            )
+            ModalDrawerSheet {
+                WeatherDrawerContent(
+                    selectedItem = appState.drawerItemSelected,
+                    onClickCurrentWeather = {
+                        if (!appState.currentDestinationIs(Screen.CurrentWeather.route)) {
+                            appState.navigateToCurrentWeather()
+                        } else {
+                            appState.closeDrawer()
+                        }
+                    },
+                    onClickSevenDaysWeather = {
+                        if (!appState.currentDestinationIs(Screen.SevenDaysWeather.route)) {
+                            appState.navigateToSevenDaysWeather()
+                        } else {
+                            appState.closeDrawer()
+                        }
+                    },
+                    onClickSettings = {
+                        if (!appState.currentDestinationIs(Screen.Settings.route)) {
+                            appState.navigateToSettings()
+                        } else {
+                            appState.closeDrawer()
+                        }
+                    },
+                    onClickInformation = {
+                        if (!appState.currentDestinationIs(Screen.Info.route)) {
+                            appState.navigateToInformation()
+                        } else {
+                            appState.closeDrawer()
+                        }
+                    },
+                )
+            }
         },
     ) {
         Scaffold(
+            modifier = Modifier.fillMaxSize(),
             containerColor = Color.Transparent,
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
         ) {
             AnimatedNavHost(
                 navController = appState.controller,
