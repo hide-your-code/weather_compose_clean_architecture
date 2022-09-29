@@ -203,7 +203,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 
     // MockK
-    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("io.mockk:mockk:1.13.2")
     testImplementation("io.mockk:mockk-agent-jvm:1.12.4")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
