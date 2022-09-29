@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "09:00"
+      timezone: "Asia/Ho_Chi_Minh"
+  - package-ecosystem: gradle
+    directory: "/"
+    reviewers:
+      - "hide-your-code"
+    schedule:
+      interval: daily
+      time: "09:00"
+      timezone: "Asia/Ho_Chi_Minh"
+    open-pull-requests-limit: 99
