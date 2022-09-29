@@ -138,7 +138,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.9-beta")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.24.9-beta")
     implementation("com.google.accompanist:accompanist-permissions:0.24.9-beta")
-    implementation("com.google.accompanist:accompanist-flowlayout:0.24.9-beta")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.26.4-beta")
 
     // Google play services
     implementation("com.google.android.gms:play-services-location:20.0.0")
