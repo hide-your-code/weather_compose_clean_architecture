@@ -100,7 +100,6 @@ android {
         jvmTarget = "11"
         freeCompilerArgs = freeCompilerArgs.toMutableList().apply {
             add("-opt-in=kotlin.RequiresOptIn")
-            add("-Xuse-experimental=androidx.compose.ui.text.ExperimentalTextApi")
         }
     }
 
@@ -109,7 +108,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.1"
+        kotlinCompilerExtensionVersion = "1.3.1"
     }
 
     packagingOptions {
