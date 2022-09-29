@@ -11,6 +11,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
+    if: ${{ github.actor != 'dependabot[bot]' }
 
     steps:
       - name: Checkout code
