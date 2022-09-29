@@ -1,5 +1,6 @@
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -7,7 +8,7 @@ plugins {
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("org.jetbrains.kotlinx.kover") version "0.5.0"
+    id("org.jetbrains.kotlinx.kover") version "0.6.0"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
 }
 
@@ -18,25 +19,11 @@ val properties = Properties().apply {
 project.afterEvaluate {
     tasks.koverHtmlReport {
         group = "kover"
-        description = ""
+        description = "Generated test coverage"
+        
         dependsOn("testDebugUnitTest")
 
         isEnabled = true
-        htmlReportDir.set(layout.buildDirectory.dir("kover_report/html_result"))
-        includes = listOf("com.minhdtm.example.weapose.*")
-        excludes = listOf(
-            "*Screen*",
-            "*_Factory*",
-            "*_HiltModules*",
-            "*di*",
-            "*_Impl*",
-            "*BuildConfig*",
-            "*Activity*",
-            "*App*",
-            "*Drawer*",
-            "*Graph*",
-            "*.theme*",
-        )
     }
 
     detekt {
@@ -52,6 +39,31 @@ project.afterEvaluate {
             sarif.required.set(true)
             html.outputLocation.set(file("$rootDir/reports/detekt.html"))
             sarif.outputLocation.set(file("$rootDir/reports/detekt.sarif"))
+        }
+    }
+}
+
+kover {
+    htmlReport {
+        reportDir.set(layout.buildDirectory.dir("kover_report/html_result"))
+        filters {
+            classes {
+                includes += listOf("com.minhdtm.example.weapose.*")
+
+                excludes += listOf(
+                    "*Screen*",
+                    "*_Factory*",
+                    "*_HiltModules*",
+                    "*di*",
+                    "*_Impl*",
+                    "*BuildConfig*",
+                    "*Activity*",
+                    "*App*",
+                    "*Drawer*",
+                    "*Graph*",
+                    "*.theme*",
+                )
+            }
         }
     }
 }
