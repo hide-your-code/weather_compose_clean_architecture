@@ -42,14 +42,14 @@ jobs:
         run: mkdir -p ~/.gradle ; cp .github/gradle/ci-gradle.properties ~/.gradle/gradle.properties
 
       - name: Decode Google Play Account file
-        uses: timheuer/base64-to-file@v1.1
+        uses: timheuer/base64-to-file@v1.2
         id: google_play_account_file
         with:
           fileName: "google_play_account_key.json"
           encodedString: ${{ secrets.GOOGLE_PLAY_FILE_KEY }}
 
       - name: Decode Keystore file
-        uses: timheuer/base64-to-file@v1.1
+        uses: timheuer/base64-to-file@v1.2
         id: keystore_file
         with:
           fileName: "weapose.keystore"
