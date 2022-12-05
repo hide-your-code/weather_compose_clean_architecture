@@ -146,7 +146,7 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:2.8.0-alpha04")
 
     // Google accompanist
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.27.1")
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.28.0")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.1")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.28.0")
     implementation("com.google.accompanist:accompanist-permissions:0.27.1")
