@@ -64,7 +64,7 @@ jobs:
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
 
       - name: Update version code
-        uses: chkfung/android-version-actions@v1.1
+        uses: chkfung/android-version-actions@v1.2
         with:
           gradlePath: app/build.gradle.kts
           versionCode: ${{ env.VERSION_CODE }}
