@@ -198,7 +198,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.4.0-alpha04")
 
     // Gson
-    implementation("com.google.code.gson:gson:2.10")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     // Timber
     implementation("com.jakewharton.timber:timber:5.0.1")
