@@ -14,14 +14,12 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -39,7 +37,6 @@ import com.minhdtm.example.weapose.presentation.utils.Constants
 import com.minhdtm.example.weapose.presentation.utils.toUVIndexAttention
 import kotlinx.coroutines.flow.collectLatest
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun SevenDaysWeather(
     appState: WeatherAppState,
@@ -81,31 +78,26 @@ fun SevenDaysWeather(
             navigateToSearchByText != null -> {
                 appState.navigateToSearchByText(Screen.SevenDaysWeather, navigateToSearchByText)
             }
+
             else -> return@LaunchedEffect
         }
 
         viewModel.cleanEvent()
     }
 
-    SevenDaysWeatherScreen(
-        state = state,
-        snackbarHostState = appState.snackbarHost,
-        onRefresh = {
-            viewModel.onRefresh()
-        },
-        onDrawer = {
-            appState.openDrawer()
-        },
-        onShowSnackbar = {
-            appState.showSnackbar(it)
-        },
-        onDismissDialog = {
-            viewModel.hideError()
-        },
-        onNavigateSearch = {
-            viewModel.onNavigateToSearch()
-        },
-    )
+    SevenDaysWeatherScreen(state = state, snackbarHostState = appState.snackbarHost, onRefresh = {
+        viewModel.onRefresh()
+    }, onDrawer = {
+        appState.openDrawer()
+    }, onShowSnackbar = {
+        appState.showSnackbar(it)
+    }, onDismissDialog = {
+        viewModel.hideError()
+    }, onNavigateSearch = {
+        viewModel.onNavigateToSearch()
+    }, onClickExpandedItem = {
+        viewModel.onClickExpandedItem(it)
+    })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -118,6 +110,7 @@ fun SevenDaysWeatherScreen(
     onDrawer: () -> Unit = {},
     onNavigateSearch: () -> Unit = {},
     onDismissDialog: () -> Unit = {},
+    onClickExpandedItem: (item: DayWeatherViewData) -> Unit = {},
 ) {
     WeatherScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -142,6 +135,7 @@ fun SevenDaysWeatherScreen(
             ListWeatherDay(
                 modifier = Modifier.fillMaxSize(),
                 list = viewState.listSevenDays,
+                onClickExpandedItem = onClickExpandedItem,
             )
         }
     }
@@ -151,6 +145,7 @@ fun SevenDaysWeatherScreen(
 fun ListWeatherDay(
     modifier: Modifier = Modifier,
     list: List<DayWeatherViewData> = emptyList(),
+    onClickExpandedItem: (item: DayWeatherViewData) -> Unit = {},
 ) {
     val paddingBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
@@ -167,6 +162,7 @@ fun ListWeatherDay(
             WeatherDayItem(
                 modifier = Modifier.fillMaxWidth(),
                 item = item,
+                onClickExpandedItem = onClickExpandedItem,
             )
         }
     }
@@ -177,12 +173,13 @@ fun ListWeatherDay(
 fun WeatherDayItem(
     modifier: Modifier = Modifier,
     item: DayWeatherViewData,
+    onClickExpandedItem: (item: DayWeatherViewData) -> Unit = {},
 ) {
-    var isExpanded by rememberSaveable {
-        mutableStateOf(false)
-    }
+//    var isExpanded by rememberSaveable {
+//        mutableStateOf(false)
+//    }
 
-    val transition = updateTransition(targetState = isExpanded, label = "")
+    val transition = updateTransition(targetState = item.isExpanded, label = "")
 
     Column(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
         Row(
@@ -190,7 +187,7 @@ fun WeatherDayItem(
                 .height(70.dp)
                 .fillMaxWidth()
                 .clickable {
-                    isExpanded = !isExpanded
+                    onClickExpandedItem.invoke(item)
                 }
                 .padding(horizontal = 10.dp, vertical = 5.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -323,6 +320,9 @@ fun WeatherInformation(
 @Composable
 fun WeatherDayItemPreview() {
     WeaposeTheme {
-        WeatherDayItem(item = previewDayWeatherViewData())
+        WeatherDayItem(
+            item = previewDayWeatherViewData(),
+            onClickExpandedItem = {}
+        )
     }
 }

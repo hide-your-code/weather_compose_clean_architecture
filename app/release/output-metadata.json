@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.minhdtm.example.weapose",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 5,
+      "versionName": "1.0.3",
+      "outputFile": "weapose-1.0.3-221206-release.apk"
+    }
+  ],
+  "elementType": "File"
+}

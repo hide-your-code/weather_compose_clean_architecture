@@ -31,7 +31,7 @@ class SearchByMapViewModel @Inject constructor(
     val state: StateFlow<SearchByMapViewState> = _state
 
     init {
-        callApi {
+        retryViewModelScope {
             getDarkModeGoogleMapUseCase().collect { isDarkMode ->
                 _state.update {
                     it.copy(isDarkMode = isDarkMode)
@@ -39,7 +39,7 @@ class SearchByMapViewModel @Inject constructor(
             }
         }
 
-        callApi {
+        retryViewModelScope {
             savedStateHandle.getStateFlow(Constants.Key.LAT, "").zip(
                 savedStateHandle.getStateFlow(Constants.Key.LNG, ""),
                 transform = { lat, lng ->
@@ -54,14 +54,14 @@ class SearchByMapViewModel @Inject constructor(
     }
 
     fun setDarkMode() {
-        callApi {
+        retryViewModelScope {
             val isDarkMode = !_state.value.isDarkMode
             setDarkModeGoogleMapUseCase(SetDarkModeGoogleMapUseCase.Params(isDarkMode))
         }
     }
 
     fun setMarker(latLng: LatLng) {
-        callApi {
+        retryViewModelScope {
             _state.update {
                 it.copy(moveCamera = latLng)
             }
@@ -78,7 +78,7 @@ class SearchByMapViewModel @Inject constructor(
     }
 
     fun onClickCurrentLocation() {
-        callApi {
+        retryViewModelScope {
             getCurrentLocationUseCase().collect { latLng ->
                 setMarker(latLng)
             }
@@ -86,7 +86,7 @@ class SearchByMapViewModel @Inject constructor(
     }
 
     fun onClickDone() {
-        callApi {
+        retryViewModelScope {
             val toRoute = savedStateHandle.get<String>(Constants.Key.FROM_ROUTE)
 
             if (!toRoute.isNullOrBlank()) {

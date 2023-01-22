@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Devices.PIXEL_4_XL
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -52,10 +51,7 @@ import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import kotlinx.coroutines.flow.collectLatest
 
-@OptIn(
-    ExperimentalPermissionsApi::class,
-    ExperimentalLifecycleComposeApi::class,
-)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CurrentWeather(
     appState: WeatherAppState,
@@ -114,17 +110,21 @@ fun CurrentWeather(
                     locationPermissionState.allPermissionsGranted -> {
                         viewModel.getCurrentLocation()
                     }
+
                     locationPermissionState.shouldShowRationale -> {
                         viewModel.permissionIsNotGranted()
                     }
+
                     else -> {
                         locationPermissionState.launchMultiplePermissionRequest()
                     }
                 }
             }
+
             navigateToSearch != null -> {
                 appState.navigateToSearchByText(Screen.CurrentWeather, navigateToSearch)
             }
+
             else -> return@LaunchedEffect
         }
         viewModel.cleanEvent()
@@ -154,6 +154,7 @@ fun CurrentWeather(
                     ActionType.RETRY_API -> {
                         viewModel.retry()
                     }
+
                     ActionType.OPEN_PERMISSION -> {
                         appState.openAppSetting(context)
                     }
@@ -349,7 +350,7 @@ fun CurrentWeatherAppBar(
     onDrawer: () -> Unit = {},
     onNavigateSearch: () -> Unit = {},
 ) {
-    SmallTopAppBar(
+    TopAppBar(
         modifier = modifier,
         title = {
             if (title.isNotBlank()) {
