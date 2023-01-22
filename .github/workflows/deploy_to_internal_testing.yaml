@@ -41,6 +41,12 @@ jobs:
       - name: Copy gradle properties file
         run: mkdir -p ~/.gradle ; cp .github/gradle/ci-gradle.properties ~/.gradle/gradle.properties
 
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Decode Google Play Account file
         uses: timheuer/base64-to-file@v1.2
         id: google_play_account_file
