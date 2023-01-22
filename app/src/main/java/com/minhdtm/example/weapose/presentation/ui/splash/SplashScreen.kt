@@ -20,10 +20,7 @@ import com.minhdtm.example.weapose.presentation.theme.WeaposeTheme
 import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 
 @Composable
-fun Splash(
-    appState: WeatherAppState,
-    viewModel: SplashViewModel,
-) {
+fun Splash(appState: WeatherAppState) {
     SplashScreen(
         onNavigateHome = appState::navigateToHome
     )

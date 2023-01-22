@@ -5,6 +5,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.LocationOn
@@ -21,21 +22,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.*
-import androidx.compose.material.TopAppBar
 import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.presentation.component.WeatherScaffold
 import com.minhdtm.example.weapose.presentation.theme.WeaposeTheme
 import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 import com.minhdtm.example.weapose.presentation.utils.Constants
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun SearchByMap(
     appState: WeatherAppState,
@@ -68,11 +66,13 @@ fun SearchByMap(
                     appState.popBackStack(popToRoute = state.popupToRoute, params = params)
                 }
             }
+
             state.moveCamera != null -> {
                 state.moveCamera?.let {
                     cameraPositionState.move(CameraUpdateFactory.newLatLng(it))
                 }
             }
+
             else -> return@LaunchedEffect
         }
         viewModel.cleanEvent()
@@ -219,7 +219,7 @@ fun ResultMap(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class,)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun SearchAppBar(
     isDarkMode: Boolean,

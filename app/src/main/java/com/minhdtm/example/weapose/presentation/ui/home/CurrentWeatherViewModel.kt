@@ -20,7 +20,6 @@ import com.minhdtm.example.weapose.presentation.model.HourWeatherViewData
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -50,7 +49,7 @@ class CurrentWeatherViewModel @Inject constructor(
     }
 
     fun getWeatherByAddressName(addressName: String) {
-        callApi {
+        retryViewModelScope {
             showLoading()
             getLocationFromTextUseCase(GetLocationFromTextUseCase.Params(addressName)).collect {
                 val latLng = LatLng(it.latitude, it.longitude)
@@ -60,14 +59,14 @@ class CurrentWeatherViewModel @Inject constructor(
     }
 
     fun getWeatherByLocation(latLng: LatLng) {
-        callApi {
+        retryViewModelScope {
             showLoading()
             getCurrentWeather(latLng)
         }
     }
 
     fun getCurrentLocation() {
-        callApi {
+        retryViewModelScope {
             showLoading()
             getCurrentLocationUseCase().collect {
                 getCurrentWeather(it)
@@ -76,7 +75,7 @@ class CurrentWeatherViewModel @Inject constructor(
     }
 
     private fun getCurrentWeather(latLng: LatLng) {
-        callApi {
+        retryViewModelScope {
             if (currentLocation != latLng) {
                 currentLocation = latLng
             }

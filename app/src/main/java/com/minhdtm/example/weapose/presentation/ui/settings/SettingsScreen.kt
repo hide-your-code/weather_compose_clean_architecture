@@ -8,12 +8,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.minhdtm.example.weapose.presentation.component.WeatherScaffold
 import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun Settings(
     appState: WeatherAppState,
@@ -50,7 +48,7 @@ fun SettingsScreen(
         state = state,
         snackbarHostState = snackbarHostState,
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 modifier = Modifier.statusBarsPadding(),
                 title = {
                     Text(text = "Setting screen")

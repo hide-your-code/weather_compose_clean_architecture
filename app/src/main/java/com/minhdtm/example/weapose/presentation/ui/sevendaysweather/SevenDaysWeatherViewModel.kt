@@ -35,7 +35,7 @@ class SevenDaysWeatherViewModel @Inject constructor(
     }
 
     fun getWeatherByAddressName(addressName: String) {
-        callApi {
+        retryViewModelScope {
             showLoading()
 
             _state.update {
@@ -50,7 +50,7 @@ class SevenDaysWeatherViewModel @Inject constructor(
     }
 
     fun getWeatherByLocation(latLng: LatLng) {
-        callApi {
+        retryViewModelScope {
             showLoading()
 
             getAddressFromLocationUseCase.invoke(GetAddressFromLocationUseCase.Params(latLng)).collect { address ->
@@ -65,8 +65,29 @@ class SevenDaysWeatherViewModel @Inject constructor(
         }
     }
 
+    fun onClickExpandedItem(item: DayWeatherViewData) {
+        retryViewModelScope {
+            val listSevenDays = _state.value.listSevenDays.toMutableList()
+
+            if (listSevenDays.isNotEmpty()) {
+                val indexItem = listSevenDays.indexOfFirst {
+                    item.dateTime == it.dateTime
+                }
+
+                if (indexItem != -1) {
+                    listSevenDays[indexItem] = listSevenDays[indexItem].copy(
+                        isExpanded = !listSevenDays[indexItem].isExpanded,
+                    )
+                    _state.update {
+                        it.copy(listSevenDays = listSevenDays)
+                    }
+                }
+            }
+        }
+    }
+
     private fun getCurrentWeather() {
-        callApi {
+        retryViewModelScope {
             showLoading()
 
             getCurrentAddressUseCase().collect { address ->
@@ -83,7 +104,7 @@ class SevenDaysWeatherViewModel @Inject constructor(
     }
 
     private fun getSevenDaysWeather(latLng: LatLng) {
-        callApi {
+        retryViewModelScope {
             currentLocation = latLng
 
             getSevenDaysWeatherUseCase(GetSevenDaysWeatherUseCase.Params(latLng)).collect { response ->
@@ -106,7 +127,7 @@ class SevenDaysWeatherViewModel @Inject constructor(
     }
 
     fun onRefresh(isShowRefresh: Boolean = true) {
-        callApi {
+        retryViewModelScope {
             _state.update {
                 it.copy(
                     isRefresh = isShowRefresh,

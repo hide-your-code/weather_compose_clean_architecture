@@ -15,7 +15,7 @@ class SettingsViewModel @Inject constructor() : BaseViewModel() {
     val state: StateFlow<SettingViewState> = _state
 
     init {
-        callApi {
+        retryViewModelScope {
             _state.update {
                 it.copy(error = WeatherException.SnackBarException(message = "Test message!"))
             }
