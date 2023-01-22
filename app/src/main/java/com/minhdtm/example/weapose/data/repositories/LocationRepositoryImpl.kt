@@ -17,6 +17,7 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.domain.exception.WeatherException
 import com.minhdtm.example.weapose.domain.repositories.LocationRepository
+import com.minhdtm.example.weapose.presentation.utils.getSystemLocale
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -33,6 +34,7 @@ class LocationRepositoryImpl @Inject constructor(
     private val token: AutocompleteSessionToken,
     private val placesClient: PlacesClient,
 ) : LocationRepository {
+
     @SuppressLint("MissingPermission")
     override fun getCurrentLocation(): Flow<LatLng> = flow {
         // Just want to get location only want.
@@ -70,6 +72,7 @@ class LocationRepositoryImpl @Inject constructor(
     }
 
     @OptIn(FlowPreview::class)
+    @Suppress("DEPRECATION")
     override fun getCurrentAddress(): Flow<Address> = getCurrentLocation().flatMapConcat { latLng ->
         flow {
             emit(suspendCancellableCoroutine { cancellableContinuation ->
@@ -106,6 +109,7 @@ class LocationRepositoryImpl @Inject constructor(
         }
     }
 
+    @Suppress("DEPRECATION")
     override fun getLocationFromText(text: String): Flow<Address> = flow {
         emit(suspendCancellableCoroutine { cancellableContinuation ->
             val error = WeatherException.SnackBarException(
@@ -140,19 +144,14 @@ class LocationRepositoryImpl @Inject constructor(
         })
     }
 
+    @Suppress("DEPRECATION")
     override fun getAddressFromLocation(latLng: LatLng): Flow<Address> = flow {
         emit(suspendCancellableCoroutine { cancellableContinuation ->
             val error = WeatherException.SnackBarException(
                 -1, context.getString(R.string.error_message_address_is_not_found)
             )
 
-            val getSystemLocale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                context.resources.configuration.locales[0]
-            } else {
-                context.resources.configuration.locale
-            }
-
-            val geo = Geocoder(context, getSystemLocale)
+            val geo = Geocoder(context, context.getSystemLocale())
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 geo.getFromLocation(latLng.latitude, latLng.longitude, 1) { listAddress ->
                     if (listAddress.isEmpty()) {
@@ -180,9 +179,11 @@ class LocationRepositoryImpl @Inject constructor(
         )
 
         emit(suspendCancellableCoroutine { cancellableContinuation ->
-            val request =
-                FindAutocompletePredictionsRequest.builder().setTypeFilter(TypeFilter.ADDRESS).setSessionToken(token)
-                    .setQuery(text).build()
+            val request = FindAutocompletePredictionsRequest.builder()
+                .setTypesFilter(listOf(TypeFilter.ADDRESS.toString()))
+                .setSessionToken(token)
+                .setQuery(text)
+                .build()
 
             placesClient.findAutocompletePredictions(request).addOnSuccessListener {
                 cancellableContinuation.resume(it.autocompletePredictions)

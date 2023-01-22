@@ -104,10 +104,7 @@ fun NavGraphBuilder.splash(appState: WeatherAppState) {
                 slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
             },
         ) {
-            Splash(
-                appState = appState,
-                viewModel = hiltViewModel(),
-            )
+            Splash(appState)
         }
     }
 }

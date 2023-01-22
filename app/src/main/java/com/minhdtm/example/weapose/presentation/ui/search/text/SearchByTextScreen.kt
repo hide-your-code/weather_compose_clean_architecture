@@ -1,7 +1,5 @@
 package com.minhdtm.example.weapose.presentation.ui.search.text
 
-import android.os.Build
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,7 +20,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.flowlayout.FlowRow
@@ -34,11 +31,9 @@ import com.minhdtm.example.weapose.presentation.model.HistorySearchAddressViewDa
 import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import com.minhdtm.example.weapose.presentation.utils.clearFocusOnKeyboardDismiss
+import com.minhdtm.example.weapose.presentation.utils.getSystemLocale
 
-@OptIn(
-    ExperimentalComposeUiApi::class,
-    ExperimentalLifecycleComposeApi::class,
-)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchByText(
     appState: WeatherAppState,
@@ -58,6 +53,7 @@ fun SearchByText(
             navigateToSearchByMap != null -> {
                 appState.navigateToSearchByMap(navigateToSearchByMap.fromRoute, navigateToSearchByMap.latLng)
             }
+
             else -> return@LaunchedEffect
         }
 
@@ -76,11 +72,7 @@ fun SearchByText(
     // Change the placeholder text when switch to vietnamese or english
     val context = LocalContext.current
     val locale = remember {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context.resources.configuration.locales[0]
-        } else {
-            context.resources.configuration.locale
-        }
+        context.getSystemLocale()
     }
 
     LaunchedEffect(locale) {

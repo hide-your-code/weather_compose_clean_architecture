@@ -16,13 +16,14 @@ class FlowCallAdapterFactory @Inject constructor(
         annotations: Array<out Annotation>,
         retrofit: Retrofit,
     ): CallAdapter<*, *>? {
+        check(returnType is ParameterizedType) {
+            "Flow return type must be parameterized as Flow<Foo> or Flow<out Foo>"
+        }
+
         if (getRawType(returnType) != Flow::class.java) {
             return null
         }
 
-        check(returnType is ParameterizedType) {
-            "Flow return type must be parameterized as Flow<Foo> or Flow<out Foo>"
-        }
 
         val responseType = getParameterUpperBound(0, returnType)
         return FlowCallAdapter<Any>(retrofit, mapper, responseType)

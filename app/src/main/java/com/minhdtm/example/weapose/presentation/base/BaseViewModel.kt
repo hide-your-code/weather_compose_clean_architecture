@@ -3,7 +3,12 @@ package com.minhdtm.example.weapose.presentation.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.minhdtm.example.weapose.domain.exception.WeatherException
-import kotlinx.coroutines.*
+import com.minhdtm.example.weapose.domain.model.AlertDialog
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
@@ -15,7 +20,13 @@ open class BaseViewModel : ViewModel() {
         val errorResponse = if (exception is WeatherException) {
             exception
         } else {
-            WeatherException.SnackBarException(message = exception.message ?: "")
+            WeatherException.AlertException(
+                code = -1,
+                alertDialog = AlertDialog(
+                    title = "Unknown",
+                    message = exception.toString(),
+                ),
+            )
         }
 
         showError(errorResponse)
@@ -31,7 +42,7 @@ open class BaseViewModel : ViewModel() {
 
     open fun hideLoading() {}
 
-    fun callApi(
+    fun retryViewModelScope(
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
         api: suspend CoroutineScope.() -> Unit,

@@ -43,7 +43,7 @@ class SearchByTextViewModel @Inject constructor(
     val state: StateFlow<SearchByTextViewState> = _state
 
     init {
-        callApi {
+        retryViewModelScope {
             getSearchAddressUseCase().collect { listSearch ->
                 _state.update {
                     it.copy(
@@ -55,7 +55,7 @@ class SearchByTextViewModel @Inject constructor(
             }
         }
 
-        callApi {
+        retryViewModelScope {
             getCurrentLocationUseCase().flatMapConcat { latLng ->
                 getAddressFromLocationUseCase(GetAddressFromLocationUseCase.Params(latLng))
             }.collect { address ->
@@ -96,7 +96,7 @@ class SearchByTextViewModel @Inject constructor(
                 it.copy(listResult = emptyList())
             }
         } else {
-            callApi {
+            retryViewModelScope {
                 getAddressFromTextUseCase(GetAddressFromTextUseCase.Params(text)).collect { listAddress ->
                     _state.update { state ->
                         state.copy(
@@ -109,7 +109,7 @@ class SearchByTextViewModel @Inject constructor(
     }
 
     fun addSearchHistory(address: String) {
-        callApi {
+        retryViewModelScope {
             val entity = historySearchAddressViewDataMapper.mapToModel(HistorySearchAddressViewData(address))
 
             addSearchAddressUseCase.invoke(AddSearchAddressUseCase.Params(entity))
@@ -117,7 +117,7 @@ class SearchByTextViewModel @Inject constructor(
     }
 
     fun clearHistory() {
-        callApi {
+        retryViewModelScope {
             clearAllSearchAddressUseCase.invoke()
         }
     }
