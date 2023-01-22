@@ -121,7 +121,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.0"
+        kotlinCompilerExtensionVersion = "1.3.2"
     }
 
     packaging {
@@ -207,7 +207,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Kotlin reflect
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
 
     // Lottie
     implementation("com.airbnb.android:lottie-compose:5.2.0")
