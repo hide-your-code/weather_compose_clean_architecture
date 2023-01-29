@@ -26,7 +26,6 @@ fun Splash(appState: WeatherAppState) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SplashScreen(

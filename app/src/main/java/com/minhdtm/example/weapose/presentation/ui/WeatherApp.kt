@@ -29,7 +29,7 @@ import com.minhdtm.example.weapose.presentation.broadcast.LocaleChangeBroadcast
 import com.minhdtm.example.weapose.presentation.component.NavigationDrawerLabel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun WeatherApp(appState: WeatherAppState = rememberWeatherAppState()) {
     val systemUiController = rememberSystemUiController()
@@ -115,7 +115,6 @@ fun WeatherApp(appState: WeatherAppState = rememberWeatherAppState()) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ColumnScope.WeatherDrawerContent(
     selectedItem: DrawerTab,

@@ -6,7 +6,7 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.*
@@ -92,16 +92,16 @@ fun NavGraphBuilder.splash(appState: WeatherAppState) {
         composable(
             route = Screen.Splash.route,
             enterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             exitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             popEnterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
             popExitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
         ) {
             Splash(appState)
@@ -118,16 +118,16 @@ fun NavGraphBuilder.home(appState: WeatherAppState) {
         composable(
             route = Screen.CurrentWeather.route,
             enterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             exitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             popEnterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
             popExitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
         ) {
             CurrentWeather(
@@ -139,16 +139,16 @@ fun NavGraphBuilder.home(appState: WeatherAppState) {
         composable(
             route = Screen.Settings.route,
             enterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             exitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             popEnterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
             popExitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
         ) {
             Settings(
@@ -160,16 +160,16 @@ fun NavGraphBuilder.home(appState: WeatherAppState) {
         composable(
             route = Screen.SevenDaysWeather.route,
             enterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             exitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             popEnterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
             popExitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
         ) {
             SevenDaysWeather(
@@ -181,16 +181,16 @@ fun NavGraphBuilder.home(appState: WeatherAppState) {
         composable(
             route = Screen.Info.route,
             enterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             exitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             popEnterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
             popExitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
         ) {
             Information(
@@ -207,16 +207,16 @@ fun NavGraphBuilder.home(appState: WeatherAppState) {
                 navArgument(Constants.Key.FROM_ROUTE) { type = NavType.StringType },
             ),
             enterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             exitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             popEnterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
             popExitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
         ) {
             SearchByMap(
@@ -233,16 +233,16 @@ fun NavGraphBuilder.home(appState: WeatherAppState) {
                 navArgument(Constants.Key.FROM_ROUTE) { type = NavType.StringType },
             ),
             enterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             exitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, animationSpec = tween(700))
             },
             popEnterTransition = {
-                slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
             popExitTransition = {
-                slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700))
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, animationSpec = tween(700))
             },
         ) {
             SearchByText(
@@ -253,7 +253,7 @@ fun NavGraphBuilder.home(appState: WeatherAppState) {
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun rememberWeatherAppState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
@@ -264,7 +264,6 @@ fun rememberWeatherAppState(
     WeatherAppState(coroutineScope, controller, drawer, snackbarHost)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 class WeatherAppState(
     private val coroutineScope: CoroutineScope,
     val controller: NavHostController,

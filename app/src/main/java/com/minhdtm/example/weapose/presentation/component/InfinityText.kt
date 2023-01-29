@@ -48,8 +48,12 @@ fun InfinityText(
             modifier = modifier,
             targetState = text,
             transitionSpec = {
-                slideInVertically { height -> -height } + fadeIn() with slideOutVertically { height -> height } + fadeOut()
+                val fadeInAndFadeOut = slideInVertically { height -> -height } + fadeIn() with slideOutVertically { height -> height } + fadeOut()
+                fadeInAndFadeOut.using(
+                    SizeTransform(clip = false)
+                )
             },
+            label = "",
         ) { targetState ->
             content.invoke(targetState)
         }

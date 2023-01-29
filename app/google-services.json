@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "16999261007",
+    "project_id": "compose-weather-app",
+    "storage_bucket": "compose-weather-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16999261007:android:a5c0e1899030f058679b3a",
+        "android_client_info": {
+          "package_name": "com.minhdtm.example.weapose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "16999261007-foanp39uhuvbrfpgpoj5ctflqta0ua6q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.minhdtm.example.weapose",
+            "certificate_hash": "dd619a05fb9afaf79a891ddb84bcb457938c74cf"
+          }
+        },
+        {
+          "client_id": "16999261007-23dk7vg2hta5fj7bma065nlebaoag4fn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgPVL6NrK_AyIrBM9-cOT8DDm6KlF2nwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "16999261007-23dk7vg2hta5fj7bma065nlebaoag4fn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
