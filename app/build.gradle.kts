@@ -121,7 +121,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
+        kotlinCompilerExtensionVersion = "1.4.0"
     }
 
     packaging {
@@ -136,12 +136,12 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.6.1")
 
     // Compose ui
-    implementation("androidx.compose.ui:ui:1.4.0-alpha04")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0-alpha04")
+    implementation("androidx.compose.ui:ui:1.4.0-alpha05")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.4.0-alpha05")
 
     // Material
-    implementation("androidx.compose.material3:material3:1.1.0-alpha04")
-    implementation("androidx.compose.material:material:1.4.0-alpha04")
+    implementation("androidx.compose.material3:material3:1.1.0-alpha05")
+    implementation("androidx.compose.material:material:1.4.0-alpha05")
 
     // Work manager
     implementation("androidx.work:work-runtime-ktx:2.8.0-rc01")
@@ -187,12 +187,12 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.5.3")
 
     // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha04")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha04")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-alpha05")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha05")
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha04")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha04")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha05")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha05")
 
     // LiveData
     implementation("androidx.compose.runtime:runtime-livedata:1.4.0-alpha04")
@@ -207,7 +207,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Kotlin reflect
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.20")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.0")
 
     // Lottie
     implementation("com.airbnb.android:lottie-compose:5.2.0")
@@ -223,6 +223,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.3")
 
-    debugImplementation("androidx.compose.ui:ui-tooling:1.4.0-alpha04")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.0-alpha04")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.4.0-alpha05")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.4.0-alpha05")
 }

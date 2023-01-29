@@ -9,9 +9,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.PullRefreshState
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,8 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.android.gms.maps.model.LatLng
 import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.presentation.component.WeatherScaffold
@@ -37,12 +40,19 @@ import com.minhdtm.example.weapose.presentation.utils.Constants
 import com.minhdtm.example.weapose.presentation.utils.toUVIndexAttention
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SevenDaysWeather(
     appState: WeatherAppState,
     viewModel: SevenDaysWeatherViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = state.isRefresh,
+        onRefresh = {
+            viewModel.onRefresh()
+        }
+    )
 
     // Get data from back
     LaunchedEffect(true) {
@@ -86,10 +96,9 @@ fun SevenDaysWeather(
     }
 
     SevenDaysWeatherScreen(
-        state = state, snackbarHostState = appState.snackbarHost,
-        onRefresh = {
-            viewModel.onRefresh()
-        },
+        state = state,
+        snackbarHostState = appState.snackbarHost,
+        pullRefreshState = pullRefreshState,
         onDrawer = {
             appState.openDrawer()
         },
@@ -108,12 +117,12 @@ fun SevenDaysWeather(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun SevenDaysWeatherScreen(
     state: SevenDaysViewState,
     snackbarHostState: SnackbarHostState,
-    onRefresh: () -> Unit = {},
+    pullRefreshState: PullRefreshState,
     onShowSnackbar: (message: String) -> Unit = {},
     onDrawer: () -> Unit = {},
     onNavigateSearch: () -> Unit = {},
@@ -136,14 +145,17 @@ fun SevenDaysWeatherScreen(
         onShowSnackbar = onShowSnackbar,
         onDismissErrorDialog = onDismissDialog,
     ) { _, viewState ->
-        SwipeRefresh(
-            state = SwipeRefreshState(viewState.isRefresh),
-            onRefresh = onRefresh,
-        ) {
+        Box(modifier = Modifier.pullRefresh(pullRefreshState)) {
             ListWeatherDay(
                 modifier = Modifier.fillMaxSize(),
                 list = viewState.listSevenDays,
                 onClickExpandedItem = onClickExpandedItem,
+            )
+
+            PullRefreshIndicator(
+                refreshing = state.isRefresh,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter),
             )
         }
     }

@@ -130,7 +130,7 @@ class CurrentWeatherViewModel @Inject constructor(
             )
         }
 
-        getCurrentWeather(currentLocation)
+        getCurrentLocation()
     }
 
     fun cleanEvent() {
