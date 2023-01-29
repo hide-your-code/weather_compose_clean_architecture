@@ -1,0 +1,3 @@
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Throwable
+-keep public class * extends com.minhdtm.example.weapose.data.exception.ResponseException

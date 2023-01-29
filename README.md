@@ -11,6 +11,12 @@ This app is inspired by:
 
 I want to say thanks for those people to help me to make this app.
 
+## :construction: In progress
+
+I'm trying to implement **Version Catalog** for new Gradle's version but the **Dependabot** doesn't support it ([seeing this](https://github.com/dependabot/dependabot-core/pull/6249)). 
+
+You can check out from `v1.0.4/version_catalog` to see what I done.
+
 ## :tada: Ready on Google Play
 
 Now, you can download it on Google Play Store. Install it and give me your feedback!

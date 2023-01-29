@@ -171,7 +171,7 @@ fun CurrentWeather(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CurrentWeatherScreen(
     state: CurrentWeatherViewState,
