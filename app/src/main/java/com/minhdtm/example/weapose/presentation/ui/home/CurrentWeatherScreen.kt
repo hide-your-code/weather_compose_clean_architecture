@@ -1,7 +1,6 @@
 package com.minhdtm.example.weapose.presentation.ui.home
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -10,9 +9,14 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.sharp.LocationOn
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.PullRefreshState
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,8 +40,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.android.gms.maps.model.LatLng
 import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.domain.enums.ActionType
@@ -51,13 +53,20 @@ import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import kotlinx.coroutines.flow.collectLatest
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun CurrentWeather(
     appState: WeatherAppState,
     viewModel: CurrentWeatherViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = state.isRefresh,
+        onRefresh = {
+            viewModel.onRefreshCurrentWeather()
+        },
+    )
 
     val context = LocalContext.current
 
@@ -132,15 +141,13 @@ fun CurrentWeather(
 
     CurrentWeatherScreen(
         state = state,
+        pullRefreshState = pullRefreshState,
         snackbarHostState = appState.snackbarHost,
         onDrawer = {
             appState.openDrawer()
         },
         onShowSnackbar = {
             appState.showSnackbar(it)
-        },
-        onRefresh = {
-            viewModel.onRefreshCurrentWeather()
         },
         onDismissErrorDialog = {
             viewModel.hideError()
@@ -164,13 +171,12 @@ fun CurrentWeather(
     )
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun CurrentWeatherScreen(
     state: CurrentWeatherViewState,
+    pullRefreshState: PullRefreshState,
     snackbarHostState: SnackbarHostState = SnackbarHostState(),
-    onRefresh: () -> Unit = {},
     onDrawer: () -> Unit = {},
     onDismissErrorDialog: () -> Unit = {},
     onShowSnackbar: (message: String) -> Unit = {},
@@ -193,16 +199,17 @@ fun CurrentWeatherScreen(
             )
         },
     ) { _, viewState ->
-        SwipeRefresh(
-            state = SwipeRefreshState(viewState.isRefresh),
-            onRefresh = onRefresh,
-        ) {
-            if (viewState.currentWeather != null) {
+        Box(Modifier.pullRefresh(pullRefreshState)) {
+            viewState.currentWeather?.let {
                 HomeContent(
-                    currentWeather = viewState.currentWeather,
+                    currentWeather = it,
                     listHourly = viewState.listHourlyWeatherToday,
                 )
             }
+
+            PullRefreshIndicator(
+                refreshing = state.isRefresh, state = pullRefreshState, modifier = Modifier.align(Alignment.TopCenter)
+            )
         }
     }
 }
@@ -483,12 +490,16 @@ private fun AppBarPreview() {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview(name = "Light", showBackground = true, device = NEXUS_5)
 @Preview(name = "Dark", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, device = PIXEL_4_XL)
 @Composable
 private fun ScreenPreview() {
     WeaposeTheme {
-        CurrentWeatherScreen(CurrentWeatherViewState())
+        CurrentWeatherScreen(
+            state = CurrentWeatherViewState(),
+            pullRefreshState = rememberPullRefreshState(refreshing = true, onRefresh = {})
+        )
     }
 }
 
