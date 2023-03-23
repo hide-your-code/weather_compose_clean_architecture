@@ -151,7 +151,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.28.0")
     implementation("com.google.accompanist:accompanist-permissions:0.27.0")
-    implementation("com.google.accompanist:accompanist-flowlayout:0.28.0")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.30.0")
 
     // Google play services
     implementation("com.google.android.gms:play-services-location:21.0.1")
