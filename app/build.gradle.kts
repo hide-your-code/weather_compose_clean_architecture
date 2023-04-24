@@ -169,7 +169,7 @@ dependencies {
 
     // Okhttp
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     // Room
     implementation("androidx.room:room-runtime:2.5.0")
