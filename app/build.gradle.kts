@@ -160,7 +160,7 @@ dependencies {
     implementation("com.google.maps.android:maps-compose:2.11.2")
 
     // Coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
     // Retrofit
