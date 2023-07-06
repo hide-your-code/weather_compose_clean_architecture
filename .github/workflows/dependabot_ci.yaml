@@ -27,6 +27,9 @@ jobs:
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
         run: printf "API_KEY=\"$API_KEY\"\nBASE_URL=\"$BASE_URL\"\nMAPS_API_KEY=\"$MAPS_API_KEY\"" > ./local.properties
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
       - name: Caching gradle
         uses: actions/cache@v3
         with:

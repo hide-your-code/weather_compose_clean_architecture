@@ -226,8 +226,7 @@ fun SearchAppBar(
     onBack: () -> Unit = {},
     onChangeModeGoogleMap: () -> Unit = {},
 ) {
-    TopAppBar(
-        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
+    TopAppBar(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
         backgroundColor = Color.Transparent,
         contentColor = Color.Transparent,
         elevation = 0.dp,
@@ -255,14 +254,15 @@ fun SearchAppBar(
                     targetState = isDarkMode,
                     transitionSpec = {
                         if (!targetState) { // Dark mode
-                            slideInVertically { height -> height } + fadeIn() with slideOutVertically { height -> -height } + fadeOut()
+                            slideInVertically { height -> height } + fadeIn() togetherWith slideOutVertically { height -> -height } + fadeOut()
                         } else { // Light mode
-                            slideInVertically { height -> -height } + fadeIn() with slideOutVertically { height -> height } + fadeOut()
+                            slideInVertically { height -> -height } + fadeIn() togetherWith slideOutVertically { height -> height } + fadeOut()
                         }.using(
                             SizeTransform(clip = false)
                         )
                     },
-                ) {
+                    label = "",
+                ) { _ ->
                     val icon = rememberSaveable(isDarkMode) {
                         if (isDarkMode) {
                             R.drawable.ic_dark_mode
