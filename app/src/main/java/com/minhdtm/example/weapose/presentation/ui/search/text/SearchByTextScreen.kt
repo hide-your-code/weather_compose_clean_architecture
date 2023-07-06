@@ -114,7 +114,6 @@ fun SearchByText(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchByTextScreen(
     state: SearchByTextViewState,
@@ -241,7 +240,6 @@ fun EmptyList(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListHistorySearch(
     modifier: Modifier = Modifier,
@@ -297,7 +295,6 @@ fun ItemResultSearch(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchByTextAppBar(
     modifier: Modifier = Modifier,
@@ -317,7 +314,7 @@ fun SearchByTextAppBar(
         onValueChange = onTextChange,
         singleLine = true,
         shape = RoundedCornerShape(30.dp),
-        colors = TextFieldDefaults.textFieldColors(
+        colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,

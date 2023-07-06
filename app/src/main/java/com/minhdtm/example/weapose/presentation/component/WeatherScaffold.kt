@@ -8,7 +8,6 @@ import androidx.compose.ui.graphics.Color
 import com.minhdtm.example.weapose.domain.enums.ActionType
 import com.minhdtm.example.weapose.presentation.base.ViewState
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <VS : ViewState> WeatherScaffold(
     modifier: Modifier = Modifier,
