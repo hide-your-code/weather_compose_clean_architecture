@@ -7,7 +7,7 @@ google-maps-screts = "2.0.1"
 google-services = "4.3.15"
 google-ksp = "1.8.20-1.0.10"
 kotlin-android = "1.8.10"
-kotlin-jvm = "1.8.10"
+kotlin-jvm = "1.9.0"
 
 # AndroidX
 androidx-activity = "1.7.2"
