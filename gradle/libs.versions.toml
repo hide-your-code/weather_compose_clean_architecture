@@ -31,7 +31,7 @@ firebase-bom = "32.1.1"
 
 # Jetbrains
 jetbrains-kotlin-reflect = "1.8.10"
-jetbrains-kotlinx-coroutines = "1.6.4"
+jetbrains-kotlinx-coroutines = "1.7.3"
 
 # Junit
 junit = "4.13.2"
