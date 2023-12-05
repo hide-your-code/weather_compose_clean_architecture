@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-@OptIn(FlowPreview::class)
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class SearchByTextViewModel @Inject constructor(

@@ -1,61 +1,61 @@
 [versions]
 # Gradle
-android-core = "8.2.0-alpha01"
+android-core = "8.3.0-alpha16"
 firebase-crashlytics = "2.9.4"
-google-hilt = "2.45"
+google-hilt = "2.48.1"
 google-maps-screts = "2.0.1"
 google-services = "4.3.15"
-google-ksp = "1.8.20-1.0.10"
-kotlin-android = "1.8.10"
-kotlin-jvm = "1.8.10"
+google-ksp = "1.9.20-1.0.14"
+kotlin-android = "1.9.20"
+kotlin-jvm = "1.9.20"
 
 # AndroidX
-androidx-activity = "1.7.2"
-androidx-compose = "1.6.0-alpha01"
-androidx-compose-material-3 = "1.2.0-alpha03"
-androidx-compose-bom = "2023.06.01"
-androidx-core = "1.10.1"
+androidx-activity = "1.8.1"
+androidx-compose = "1.6.0-beta01"
+androidx-compose-material-3 = "1.2.0-alpha11"
+androidx-compose-bom = "2023.10.01"
+androidx-core = "1.12.0"
 androidx-datastore = "1.0.0"
-androidx-hilt = "1.0.0"
-androidx-lifecycle = "2.6.1"
-androidx-livedata = "1.6.0-alpha01"
+androidx-hilt = "1.1.0"
+androidx-lifecycle = "2.6.2"
+androidx-livedata = "1.6.0-beta01"
 androidx-viewmodel = "2.6.0-alpha05"
-androidx-navigation = "2.6.0"
-androidx-room = "2.5.2"
+androidx-navigation = "2.7.5"
+androidx-room = "2.6.0"
 androidx-test-junit = "1.1.5"
 androidx-test-espresso = "3.5.1"
 androidx-work = "2.8.1"
 
 # Firebase
-firebase-bom = "32.1.1"
+firebase-bom = "32.6.0"
 
 # Jetbrains
-jetbrains-kotlin-reflect = "1.8.10"
-jetbrains-kotlinx-coroutines = "1.6.4"
+jetbrains-kotlin-reflect = "1.8.21"
+jetbrains-kotlinx-coroutines = "1.7.1"
 
 # Junit
 junit = "4.13.2"
 
 # Google
 google-accompanist = "0.31.1-alpha"
-google-dagger = "2.44.2"
+google-dagger = "2.48"
 google-gson = "2.10.1"
 google-maps = "2.9.1"
-google-places = "3.2.0"
+google-places = "3.3.0"
 google-services-location = "21.0.1"
-google-services-maps = "18.1.0"
+google-services-maps = "18.2.0"
 
 # Lottie
 lottie = "5.2.0"
 
 # MockK
-mockK = "1.13.3"
+mockK = "1.13.5"
 
 # Timber
 timber = "5.0.1"
 
 # Square
-okhttp3 = "4.10.0"
+okhttp3 = "4.11.0"
 retrofit2 = "2.9.0"
 
 [libraries]
@@ -161,7 +161,6 @@ okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-
 # Retrofit
 retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
 retrofit2-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit2" }
-
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-core" }

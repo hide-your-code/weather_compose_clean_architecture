@@ -11,7 +11,6 @@ import timber.log.Timber
 @HiltAndroidApp
 class WeatherApplication : Application() {
 
-    @Suppress("DEPRECATION")
     override fun onCreate() {
         super.onCreate()
         val appInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

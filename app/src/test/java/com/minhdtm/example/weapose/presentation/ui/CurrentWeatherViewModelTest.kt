@@ -4,8 +4,6 @@ import android.content.Context
 import android.location.Address
 import com.google.android.gms.maps.model.LatLng
 import com.minhdtm.example.weapose.base.BaseTest
-import com.minhdtm.example.weapose.utils.callPrivateFunction
-import com.minhdtm.example.weapose.utils.getPrivateProperty
 import com.minhdtm.example.weapose.domain.usecase.GetCurrentLocationUseCase
 import com.minhdtm.example.weapose.domain.usecase.GetCurrentWeatherUseCase
 import com.minhdtm.example.weapose.domain.usecase.GetHourWeatherUseCase
@@ -14,8 +12,10 @@ import com.minhdtm.example.weapose.presentation.model.CurrentWeatherMapper
 import com.minhdtm.example.weapose.presentation.model.HourWeatherMapper
 import com.minhdtm.example.weapose.presentation.model.HourWeatherViewData
 import com.minhdtm.example.weapose.presentation.ui.home.CurrentWeatherViewModel
+import com.minhdtm.example.weapose.utils.callPrivateFunction
 import com.minhdtm.example.weapose.utils.factory.ModelDefault
 import com.minhdtm.example.weapose.utils.factory.ViewDataDefault
+import com.minhdtm.example.weapose.utils.getPrivateProperty
 import com.minhdtm.example.weapose.utils.toFlow
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -30,7 +30,7 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.*
+import java.util.Locale
 
 class CurrentWeatherViewModelTest : BaseTest() {
     @get:Rule
@@ -75,7 +75,6 @@ class CurrentWeatherViewModelTest : BaseTest() {
         )
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `getCurrentLocation success`() = runTest(mainDispatcherRule.testDispatcher) {
         every { getCurrentLocationUseCase() } returns flow { emit(ModelDefault.latLng()) }
@@ -88,7 +87,6 @@ class CurrentWeatherViewModelTest : BaseTest() {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `getWeatherByLocation success`() = runTest(mainDispatcherRule.testDispatcher) {
         viewModel.getWeatherByLocation(ModelDefault.latLng())
@@ -99,7 +97,6 @@ class CurrentWeatherViewModelTest : BaseTest() {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `getWeatherByAddressName success`() = runTest(mainDispatcherRule.testDispatcher) {
         val address = spyk(Address(Locale.ENGLISH))
@@ -115,7 +112,6 @@ class CurrentWeatherViewModelTest : BaseTest() {
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `getCurrentWeather success`() = runTest(mainDispatcherRule.testDispatcher) {
         every { getCurrentWeatherUseCase(any()) } returns ModelDefault.currentWeather().toFlow()
@@ -126,21 +122,30 @@ class CurrentWeatherViewModelTest : BaseTest() {
         viewModel.callPrivateFunction<Unit>("getCurrentWeather", ModelDefault.latLng())
 
         assertEquals(viewModel.state.value.currentWeather, ViewDataDefault.currentWeather())
-        assertNotEquals(viewModel.state.value.listHourlyWeatherToday, emptyList<HourWeatherViewData>())
+        assertNotEquals(
+            viewModel.state.value.listHourlyWeatherToday,
+            emptyList<HourWeatherViewData>()
+        )
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `getCurrentWeather success with current location is in Ha Noi`() = runTest(mainDispatcherRule.testDispatcher) {
-        every { getCurrentWeatherUseCase(any()) } returns ModelDefault.currentWeather().toFlow()
-        every { getHourWeatherUseCase(any()) } returns ModelDefault.hourWeather().toFlow()
-        every { currentWeatherMapper.mapToViewData(any()) } returns ViewDataDefault.currentWeather()
-        every { hourWeatherMapper.mapToViewData(any()) } returns ViewDataDefault.hourWeather()
+    fun `getCurrentWeather success with current location is in Ha Noi`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            every { getCurrentWeatherUseCase(any()) } returns ModelDefault.currentWeather().toFlow()
+            every { getHourWeatherUseCase(any()) } returns ModelDefault.hourWeather().toFlow()
+            every { currentWeatherMapper.mapToViewData(any()) } returns ViewDataDefault.currentWeather()
+            every { hourWeatherMapper.mapToViewData(any()) } returns ViewDataDefault.hourWeather()
 
-        viewModel.callPrivateFunction<Unit>("getCurrentWeather", ModelDefault.latLngHaNoi())
+            viewModel.callPrivateFunction<Unit>("getCurrentWeather", ModelDefault.latLngHaNoi())
 
-        assertEquals(viewModel.state.value.currentWeather, ViewDataDefault.currentWeather())
-        assertNotEquals(viewModel.state.value.listHourlyWeatherToday, emptyList<HourWeatherViewData>())
-        assertEquals(viewModel.getPrivateProperty<LatLng>("currentLocation"), ModelDefault.latLngHaNoi())
-    }
+            assertEquals(viewModel.state.value.currentWeather, ViewDataDefault.currentWeather())
+            assertNotEquals(
+                viewModel.state.value.listHourlyWeatherToday,
+                emptyList<HourWeatherViewData>()
+            )
+            assertEquals(
+                viewModel.getPrivateProperty<LatLng>("currentLocation"),
+                ModelDefault.latLngHaNoi()
+            )
+        }
 }

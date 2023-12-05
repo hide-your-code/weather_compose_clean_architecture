@@ -5,15 +5,13 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    // Implemented later because we had an exception when we were trying to run tests.
-//    id("com.google.devtools.ksp")
+    id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("org.jetbrains.kotlinx.kover") version "0.7.0-Beta"
-    id("io.gitlab.arturbosch.detekt") version "1.23.0-RC3"
+    id("org.jetbrains.kotlinx.kover") version "0.7.4"
+    id("io.gitlab.arturbosch.detekt") version "1.23.3"
     id("com.google.firebase.crashlytics")
     id("com.google.gms.google-services")
-    id("org.jetbrains.kotlin.kapt")
 }
 
 val properties = Properties().apply {
@@ -22,7 +20,7 @@ val properties = Properties().apply {
 
 project.afterEvaluate {
     detekt {
-        toolVersion = "1.23.0-RC3"
+        toolVersion = "1.23.3"
         basePath = "$rootDir"
         config.setFrom(files("$rootDir/config/detekt/detekt_config.yml"))
         buildUponDefaultConfig = true
@@ -36,10 +34,6 @@ project.afterEvaluate {
             sarif.outputLocation.set(file("$rootDir/reports/detekt.sarif"))
         }
     }
-}
-
-kover {
-    useKoverTool()
 }
 
 koverReport {
@@ -88,8 +82,8 @@ android {
             useSupportLibrary = true
         }
 
-        val dateTime = SimpleDateFormat("yyMMdd").format(Date().time)
-        setProperty("archivesBaseName", "weapose-${versionName}-${dateTime}")
+//        val dateTime = SimpleDateFormat("yyMMdd").format(Date().time)
+//        setProperty("archivesBaseName", "weapose-${versionName}-${dateTime}")
 
         buildConfigField("String", "BASE_URL", properties.getProperty("BASE_URL"))
     }
@@ -132,7 +126,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
 
     packaging {
@@ -188,13 +182,13 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     annotationProcessor(libs.androidx.room.compiler)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
     // Hilt
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.hilt.work)
     implementation(libs.google.dagger.hilt.android)
-    kapt(libs.google.dagger.hilt.android.compiler)
+    ksp(libs.google.dagger.hilt.android.compiler)
 
     // Navigation
     implementation(libs.androidx.navigation)

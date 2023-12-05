@@ -4,7 +4,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -12,7 +17,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.minhdtm.example.weapose.presentation.component.WeatherScaffold
 import com.minhdtm.example.weapose.presentation.ui.WeatherAppState
-import kotlinx.coroutines.flow.buffer
 
 @Composable
 fun Information(
@@ -23,11 +27,11 @@ fun Information(
 
     InformationScreen(
         state = state,
-        snackbarHostState = appState.snackbarHost,
+        snackBarHostState = appState.snackbarHost,
         onDrawer = {
             appState.openDrawer()
         },
-        onShowSnackbar = {
+        onShowSnackBar = {
             appState.showSnackbar(it)
         },
         onDismissDialog = {
@@ -40,15 +44,15 @@ fun Information(
 @Composable
 fun InformationScreen(
     state: InformationViewState,
-    snackbarHostState: SnackbarHostState,
-    onShowSnackbar: (message: String) -> Unit = {},
+    snackBarHostState: SnackbarHostState,
+    onShowSnackBar: (message: String) -> Unit = {},
     onDrawer: () -> Unit = {},
     onDismissDialog: () -> Unit = {},
 ) {
     WeatherScaffold(
         modifier = Modifier.fillMaxSize(),
         state = state,
-        snackbarHostState = snackbarHostState,
+        snackbarHostState = snackBarHostState,
         topBar = {
             TopAppBar(
                 modifier = Modifier.statusBarsPadding(),
@@ -65,7 +69,7 @@ fun InformationScreen(
                 },
             )
         },
-        onShowSnackbar = onShowSnackbar,
+        onShowSnackbar = onShowSnackBar,
         onDismissErrorDialog = onDismissDialog,
     ) { _, _ ->
 
