@@ -7,7 +7,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.minhdtm.example.weapose.R
 import com.minhdtm.example.weapose.domain.exception.WeatherException
-import com.minhdtm.example.weapose.domain.usecase.*
+import com.minhdtm.example.weapose.domain.usecase.AddSearchAddressUseCase
+import com.minhdtm.example.weapose.domain.usecase.ClearAllSearchAddressUseCase
+import com.minhdtm.example.weapose.domain.usecase.GetAddressFromLocationUseCase
+import com.minhdtm.example.weapose.domain.usecase.GetAddressFromTextUseCase
+import com.minhdtm.example.weapose.domain.usecase.GetCurrentLocationUseCase
+import com.minhdtm.example.weapose.domain.usecase.GetSearchAddressUseCase
 import com.minhdtm.example.weapose.presentation.base.BaseViewModel
 import com.minhdtm.example.weapose.presentation.base.ViewState
 import com.minhdtm.example.weapose.presentation.model.HistorySearchAddressViewData
@@ -15,13 +20,14 @@ import com.minhdtm.example.weapose.presentation.model.HistorySearchAddressViewDa
 import com.minhdtm.example.weapose.presentation.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class SearchByTextViewModel @Inject constructor(
@@ -109,7 +115,8 @@ class SearchByTextViewModel @Inject constructor(
 
     fun addSearchHistory(address: String) {
         retryViewModelScope {
-            val entity = historySearchAddressViewDataMapper.mapToModel(HistorySearchAddressViewData(address))
+            val entity =
+                historySearchAddressViewDataMapper.mapToModel(HistorySearchAddressViewData(address))
 
             addSearchAddressUseCase.invoke(AddSearchAddressUseCase.Params(entity))
         }
