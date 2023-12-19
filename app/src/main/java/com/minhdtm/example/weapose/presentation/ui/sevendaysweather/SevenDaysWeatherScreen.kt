@@ -1,12 +1,35 @@
 package com.minhdtm.example.weapose.presentation.ui.sevendaysweather
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
@@ -17,8 +40,14 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.PullRefreshState
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -65,12 +94,13 @@ fun SevenDaysWeather(
     }
 
     LaunchedEffect(true) {
-        appState.getDataFromNextScreen(Constants.Key.LAT_LNG, Constants.Default.LAT_LNG_DEFAULT)?.collect { latLng ->
-            if (latLng != Constants.Default.LAT_LNG_DEFAULT) {
-                viewModel.getWeatherByLocation(latLng)
-                appState.removeDataFromNextScreen<LatLng>(Constants.Key.LAT_LNG)
+        appState.getDataFromNextScreen(Constants.Key.LAT_LNG, Constants.Default.LAT_LNG_DEFAULT)
+            ?.collect { latLng ->
+                if (latLng != Constants.Default.LAT_LNG_DEFAULT) {
+                    viewModel.getWeatherByLocation(latLng)
+                    appState.removeDataFromNextScreen<LatLng>(Constants.Key.LAT_LNG)
+                }
             }
-        }
     }
 
     // Locale change
@@ -293,7 +323,10 @@ fun WeatherDayItem(
                         .fillMaxWidth()
                         .padding(bottom = 5.dp),
                     title = stringResource(id = R.string.uv_index),
-                    description = stringResource(id = item.uvIndex.toUVIndexAttention(), item.uvIndex.toString()),
+                    description = stringResource(
+                        id = item.uvIndex.toUVIndexAttention(),
+                        item.uvIndex.toString()
+                    ),
                 )
 
                 WeatherInformation(
@@ -301,12 +334,19 @@ fun WeatherDayItem(
                         .fillMaxWidth()
                         .padding(bottom = 5.dp),
                     title = stringResource(id = R.string.sunset_sunrise),
-                    description = stringResource(id = R.string.sunrise_sunset, item.sunrise, item.sunset),
+                    description = stringResource(
+                        id = R.string.sunrise_sunset,
+                        item.sunrise,
+                        item.sunset
+                    ),
                 )
             }
         }
 
-        Divider(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.inversePrimary)
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.inversePrimary
+        )
     }
 }
 

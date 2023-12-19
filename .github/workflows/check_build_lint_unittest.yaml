@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Load keys from secrets
         env:
@@ -24,8 +24,14 @@ jobs:
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
         run: printf "API_KEY=\"$API_KEY\"\nBASE_URL=\"$BASE_URL\"\nMAPS_API_KEY=\"$MAPS_API_KEY\"" > ./local.properties
 
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+        uses: android-actions/setup-android@v3
 
       - name: Caching gradle
         uses: actions/cache@v3
@@ -36,13 +42,14 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Copy gradle properties file
-        run: mkdir -p ~/.gradle ; cp .github/gradle/ci-gradle.properties ~/.gradle/gradle.properties
+        run:  mkdir -p ~/.gradle ; 
+              cp .github/gradle/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - name: Setup JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
+      - name: Move google-services.json to App folder
+        env:
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICE }}
+        run:  touch ./app/google-services.json ;
+              echo "$GOOGLE_SERVICES" | base64 --decode > ./app/google-services.json
 
       - name: Build the app
         run: ./gradlew assembleDebug
@@ -64,7 +71,7 @@ jobs:
 
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Load keys from secrets
         env:
@@ -73,8 +80,14 @@ jobs:
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
         run: printf "API_KEY=\"$API_KEY\"\nBASE_URL=\"$BASE_URL\"\nMAPS_API_KEY=\"$MAPS_API_KEY\"" > ./local.properties
 
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+        uses: android-actions/setup-android@v3
 
       - name: Caching gradle
         uses: actions/cache@v3
@@ -85,13 +98,14 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Copy gradle properties file
-        run: mkdir -p ~/.gradle ; cp .github/gradle/ci-gradle.properties ~/.gradle/gradle.properties
+        run:  mkdir -p ~/.gradle ; 
+              cp .github/gradle/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - name: Setup JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
+      - name: Move google-services.json to App folder
+        env:
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICE }}
+        run:  touch ./app/google-services.json ;
+              echo "$GOOGLE_SERVICES" | base64 --decode > app/google-services.json
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2

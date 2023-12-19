@@ -1,8 +1,19 @@
 package com.minhdtm.example.weapose.presentation.component
 
-import androidx.compose.animation.*
-import androidx.compose.runtime.*
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
 
@@ -25,7 +36,6 @@ private suspend fun infinityTextChanged(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun InfinityText(
     modifier: Modifier = Modifier,
@@ -48,7 +58,9 @@ fun InfinityText(
             modifier = modifier,
             targetState = text,
             transitionSpec = {
-                val fadeInAndFadeOut = slideInVertically { height -> -height } + fadeIn() with slideOutVertically { height -> height } + fadeOut()
+                val fadeInAndFadeOut =
+                    (slideInVertically { height -> -height } + fadeIn())
+                        .togetherWith(slideOutVertically { height -> height } + fadeOut())
                 fadeInAndFadeOut.using(
                     SizeTransform(clip = false)
                 )

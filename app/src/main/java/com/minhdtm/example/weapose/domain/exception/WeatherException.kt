@@ -14,30 +14,30 @@ sealed class WeatherException(
     data class AlertException(
         override val code: Int,
         val alertDialog: AlertDialog,
-    ) : WeatherException(code, ExceptionType.ALERT_DIALOG, null)
+    ) : WeatherException(code, ExceptionType.AlertDialog, null)
 
     data class InlineException(
         override val code: Int,
         val tags: List<Tag>,
-    ) : WeatherException(code, ExceptionType.INLINE, null)
+    ) : WeatherException(code, ExceptionType.Inline, null)
 
     data class RedirectException(
         override val code: Int,
         val redirect: RedirectType,
-    ) : WeatherException(code, ExceptionType.REDIRECT, null)
+    ) : WeatherException(code, ExceptionType.Redirect, null)
 
     data class SnackBarException(
         override val code: Int = -1,
         override val message: String,
-    ) : WeatherException(code, ExceptionType.SNACK, message)
+    ) : WeatherException(code, ExceptionType.Snack, message)
 
     data class ToastException(
         override val code: Int,
         override val message: String,
-    ) : WeatherException(code, ExceptionType.TOAST, message)
+    ) : WeatherException(code, ExceptionType.Toast, message)
 
     data class OnPageException(
         override val code: Int,
         override val message: String,
-    ) : WeatherException(code, ExceptionType.ON_PAGE, message)
+    ) : WeatherException(code, ExceptionType.OnPage, message)
 }

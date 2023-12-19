@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.ui.text.intl.Locale
 
-class LocaleChangeBroadcast constructor(
+class LocaleChangeBroadcast(
     private val onChangeLocale: (Locale) -> Unit,
 ) : BroadcastReceiver() {
     override fun onReceive(p0: Context?, p1: Intent?) {

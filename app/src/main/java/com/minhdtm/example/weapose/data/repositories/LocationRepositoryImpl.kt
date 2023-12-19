@@ -19,7 +19,7 @@ import com.minhdtm.example.weapose.domain.exception.WeatherException
 import com.minhdtm.example.weapose.domain.repositories.LocationRepository
 import com.minhdtm.example.weapose.presentation.utils.getSystemLocale
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
@@ -40,7 +40,8 @@ class LocationRepositoryImpl @Inject constructor(
         // Just want to get location only want.
         // If you want to emit the value every time `addOnSuccessListener()` return, you could using `callBackFlow` instead `suspendCancelableCoroutine`.
         emit(suspendCancellableCoroutine { cancellableContinuation ->
-            val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+            val fusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(context)
 
             val cancellationTokenSource = CancellationTokenSource()
 
@@ -71,7 +72,7 @@ class LocationRepositoryImpl @Inject constructor(
         })
     }
 
-    @OptIn(FlowPreview::class)
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Suppress("DEPRECATION")
     override fun getCurrentAddress(): Flow<Address> = getCurrentLocation().flatMapConcat { latLng ->
         flow {
