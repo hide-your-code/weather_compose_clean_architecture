@@ -55,7 +55,7 @@ mockK = "1.13.5"
 timber = "5.0.1"
 
 # Square
-okhttp3 = "4.11.0"
+okhttp3 = "4.12.0"
 retrofit2 = "2.9.0"
 
 [libraries]
