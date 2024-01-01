@@ -30,7 +30,7 @@ androidx-work = "2.8.1"
 firebase-bom = "32.6.0"
 
 # Jetbrains
-jetbrains-kotlin-reflect = "1.8.21"
+jetbrains-kotlin-reflect = "1.9.22"
 jetbrains-kotlinx-coroutines = "1.7.1"
 
 # Junit
