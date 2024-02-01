@@ -9,7 +9,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("org.jetbrains.kotlinx.kover") version "0.7.4"
-    id("io.gitlab.arturbosch.detekt") version "1.23.3"
+    id("io.gitlab.arturbosch.detekt") version "1.23.5"
     id("com.google.firebase.crashlytics")
     id("com.google.gms.google-services")
 }
