@@ -37,7 +37,7 @@ jetbrains-kotlinx-coroutines = "1.7.1"
 junit = "4.13.2"
 
 # Google
-google-accompanist = "0.31.1-alpha"
+google-accompanist = "0.35.0-alpha"
 google-dagger = "2.48"
 google-gson = "2.10.1"
 google-maps = "2.9.1"
