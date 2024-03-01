@@ -1,7 +1,7 @@
 [versions]
 # Gradle
 android-core = "8.3.0-alpha16"
-firebase-crashlytics = "2.9.4"
+firebase-crashlytics = "2.9.9"
 google-hilt = "2.48.1"
 google-maps-screts = "2.0.1"
 google-services = "4.3.15"
