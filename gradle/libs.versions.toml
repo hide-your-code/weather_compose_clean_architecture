@@ -27,7 +27,7 @@ androidx-test-espresso = "3.5.1"
 androidx-work = "2.8.1"
 
 # Firebase
-firebase-bom = "32.6.0"
+firebase-bom = "32.7.3"
 
 # Jetbrains
 jetbrains-kotlin-reflect = "1.8.21"
