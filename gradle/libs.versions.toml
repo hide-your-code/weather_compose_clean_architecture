@@ -24,7 +24,7 @@ androidx-navigation = "2.7.5"
 androidx-room = "2.6.0"
 androidx-test-junit = "1.1.5"
 androidx-test-espresso = "3.5.1"
-androidx-work = "2.8.1"
+androidx-work = "2.9.0"
 
 # Firebase
 firebase-bom = "32.6.0"
