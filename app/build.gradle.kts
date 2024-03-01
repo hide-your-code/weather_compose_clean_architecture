@@ -8,7 +8,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("org.jetbrains.kotlinx.kover") version "0.7.4"
+    id("org.jetbrains.kotlinx.kover") version "0.7.6"
     id("io.gitlab.arturbosch.detekt") version "1.23.3"
     id("com.google.firebase.crashlytics")
     id("com.google.gms.google-services")
