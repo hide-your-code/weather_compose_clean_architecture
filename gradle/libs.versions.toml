@@ -49,7 +49,7 @@ google-services-maps = "18.2.0"
 lottie = "5.2.0"
 
 # MockK
-mockK = "1.13.5"
+mockK = "1.13.10"
 
 # Timber
 timber = "5.0.1"
